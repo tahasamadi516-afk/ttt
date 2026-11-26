@@ -68,21 +68,65 @@ def main():
             f1 = a + (b - a) * ss[j + 1]["at"] if j + 1 < len(ss) else b
             shots.append((round(f0 * FPS), round(f1 * FPS), s))
 
-    # 3. Render each shot (cached).
-    def scene_args(s):
+    # 3a. Voice track (built first: the talking motion reads its loudness): every line placed at its start, then the studio polish chain.
+    vin, vf = [], []
+    clean = vdir / "voice" / "clean"
+    for i, ln in enumerate(lines):
+        src = clean / ln["file"] if (clean / ln["file"]).exists() else vdir / "voice" / ln["file"]
+        vin += ["-i", str(src)]
+        ms = int(starts[i] * 1000)
+        vf.append(f"[{i}:a]aresample=48000,adelay={ms}|{ms}[v{i}]")
+    vf.append("".join(f"[v{i}]" for i in range(len(lines))) +
+              f"amix=inputs={len(lines)}:normalize=0,apad=whole_dur={end_time:.3f},"
+              "highpass=f=75,equalizer=f=250:t=q:w=1.4:g=-3,equalizer=f=4000:t=q:w=1:g=2,"
+              "equalizer=f=10000:t=q:w=1:g=1.5,acompressor=threshold=-20dB:ratio=2.5:attack=10:release=150:makeup=3,"
+              "deesser=i=0.25,loudnorm=I=-16:TP=-1.5:LRA=9[out]")
+    sh(["ffmpeg", "-loglevel", "error", "-y", *vin, "-filter_complex", ";".join(vf), "-map", "[out]",
+        "-ac", "2", "-ar", "48000", str(build / "voice.wav")])
+
+    # 3b. Voice loudness per frame -> talking motion for the character.
+    import numpy as np
+    raw = subprocess.run(["ffmpeg", "-loglevel", "error", "-i", str(build / "voice.wav"), "-ac", "1", "-ar", "48000",
+                          "-f", "s16le", "-"], check=True, capture_output=True).stdout
+    pcm = np.frombuffer(raw, dtype=np.int16).astype(np.float32) / 32768
+    hop = 48000 // FPS
+    nfr = len(pcm) // hop
+    rms = np.sqrt((pcm[: nfr * hop].reshape(nfr, hop) ** 2).mean(axis=1))
+    env = np.clip((20 * np.log10(rms + 1e-6) + 45) / 30, 0, 1)   # -45 dB -> 0, -15 dB -> 1
+    env = np.round(env, 2)
+
+    # Sound-effect hits (shake the camera) as absolute times.
+    HIT_SFX = {"impact", "thud", "thunder", "record-scratch"}
+    hit_times = []
+    for line, frac, name, vol in plan["sfx"]:
+        if name in HIT_SFX:
+            la, lb = line_start(line), line_start(line + 1)
+            hit_times.append(la + (lb - la) * frac)
+
+    # 3c. Render each shot (cached).
+    def scene_args(s, f0=0, f1=0):
         k = s["kind"]
+        t0, t1 = f0 / FPS, f1 / FPS
+        local_hits = [round(h - t0, 3) for h in hit_times if t0 <= h < t1]
+        extra = {"hits": local_hits, "intro": s.get("intro", "pop")}
+        for key in ("punch", "label", "particles", "captions"):
+            if key in s:
+                extra[key] = dict(s[key]) if isinstance(s[key], dict) else s[key]
+        if "punch" in extra and "at_frac" in extra["punch"]:   # punch time as a share of the shot
+            extra["punch"]["at"] = round((t1 - t0) * extra["punch"].pop("at_frac"), 3)
         if k == "char":
             bg = plan["bgs"].get(s.get("bg")) if s.get("bg") else None
             p = {"poses": [{"src": rel_from_scenes(f"youtube/assets/character/{s['pose']}.png"), "at": 0}],
                  "x": s.get("x", 0.5), "height": s.get("height", 0.92), "push": s.get("push", 0.05),
-                 "tint": s.get("tint", "none"), "flashes": s.get("flashes", []), "zoom": s.get("zoom", 0)}
+                 "tint": s.get("tint", "none"), "flashes": s.get("flashes", []), "zoom": s.get("zoom", 0),
+                 "env": env[f0:f1].tolist(), **extra}
             if bg:
                 p["bg"] = rel_from_scenes(bg)
             return "character.html", p
         if k == "scene":
             return "character.html", {"bg": rel_from_scenes(f"youtube/assets/backgrounds/{s['img']}.png"),
                                        "push": s.get("push", 0.08), "flashes": s.get("flashes", []),
-                                       "zoom": s.get("zoom", 0)}
+                                       "zoom": s.get("zoom", 0), "tint": s.get("tint", "none"), **extra}
         if k == "title":
             return "title.html", {"lines": s["lines"], "accent": s.get("accent", []), "gap": s.get("gap", 0.18),
                                   "size": 150 * W // 1920, "start": 0.05}
@@ -92,7 +136,7 @@ def main():
 
     def render(item):
         f0, f1, s = item
-        scene, params = scene_args(s)
+        scene, params = scene_args(s, f0, f1)
         dur = (f1 - f0) / FPS
         key = hashlib.sha1(json.dumps([scene, params, f1 - f0, W], sort_keys=True).encode()).hexdigest()[:16]
         out = build / "shots" / f"{key}.mp4"
@@ -111,22 +155,6 @@ def main():
     listf.write_text("".join(f"file '{o}'\n" for o in outs))
     sh(["ffmpeg", "-loglevel", "error", "-y", "-f", "concat", "-safe", "0", "-i", str(listf),
         "-c", "copy", str(build / "video.mp4")])
-
-    # 4. Voice track: every line placed at its start, then the studio polish chain.
-    vin, vf = [], []
-    clean = vdir / "voice" / "clean"
-    for i, ln in enumerate(lines):
-        src = clean / ln["file"] if (clean / ln["file"]).exists() else vdir / "voice" / ln["file"]
-        vin += ["-i", str(src)]
-        ms = int(starts[i] * 1000)
-        vf.append(f"[{i}:a]aresample=48000,adelay={ms}|{ms}[v{i}]")
-    vf.append("".join(f"[v{i}]" for i in range(len(lines))) +
-              f"amix=inputs={len(lines)}:normalize=0,apad=whole_dur={end_time:.3f},"
-              "highpass=f=75,equalizer=f=250:t=q:w=1.4:g=-3,equalizer=f=4000:t=q:w=1:g=2,"
-              "equalizer=f=10000:t=q:w=1:g=1.5,acompressor=threshold=-20dB:ratio=2.5:attack=10:release=150:makeup=3,"
-              "deesser=i=0.25,loudnorm=I=-16:TP=-1.5:LRA=9[out]")
-    sh(["ffmpeg", "-loglevel", "error", "-y", *vin, "-filter_complex", ";".join(vf), "-map", "[out]",
-        "-ac", "2", "-ar", "48000", str(build / "voice.wav")])
 
     # 5. Music beds and sound effects, mixed under the voice.
     ins, fx, labels = ["-i", str(build / "voice.wav")], [], ["[vmain]"]

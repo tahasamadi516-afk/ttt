@@ -1,18 +1,24 @@
 <!doctype html>
 <!--
-  The character on a background: idle breathing, slow camera push, pose swaps on cue,
-  optional caption. Paths are relative to this file (tools/scenes/), e.g.
-  "../../youtube/assets/character/talking.png".
+  The character on a background: idle breathing, talking motion, slow camera push, pose swaps,
+  punch captions, chapter labels, particles. Paths are relative to this file (tools/scenes/),
+  e.g. "../../youtube/assets/character/talking.png".
   params:
     bg:      path to a background image (omit for the plain charcoal backdrop)
     poses:   [{"src": "...png", "at": 0}, {"src": "...png", "at": 2.5}]  cutouts and when each starts
     x:       0.5        horizontal center of the character, 0..1 of the frame
     height:  0.92       character height as a share of the frame
     push:    0.06       how much the camera zooms in over the clip
-    captions: [{"text": "Who was that guy?", "at": 0.5, "dur": 2}]
+    captions: [{"text": "Who was that guy?", "at": 0.5, "dur": 2}]   plain captions
+    punch:   {"text": "THAT'S IT.", "at": 1.2, "accent": ["IT."]}     big kinetic punchline
+    label:   {"kicker": "CHAPTER 5", "text": "THE WAKE-UP CALL"}       chapter card, first ~2.5 s
     tint:    "none" | "cold" | "warm"   color grade
     flashes: [1.2]      times of a white lightning flash + shake
+    hits:    [0.8]      times of a camera shake (impacts, thuds)
     zoom:    0          extra punch-in at the start (e.g. 0.15 for a dramatic snap zoom)
+    intro:   "pop"      how the shot enters: "pop" (quick zoom settle + light flash) or "none"
+    env:     [0..1, ...] voice loudness per frame (30 fps) -> talking bounce on the cutout
+    particles: "embers" | "dust" | "feathers" | "rain" | "motes" | null
 -->
 <html><head><meta charset="utf-8">
 <script src="lib.js"></script>
@@ -23,15 +29,29 @@
   .pose { position: absolute; bottom: 0; transform-origin: 50% 100%; opacity: 0; }
   #shadow { position: absolute; bottom: -40px; width: 600px; height: 90px; border-radius: 50%;
             background: radial-gradient(rgba(0,0,0,.55), transparent 70%); transform: translateX(-50%); }
+  #fx { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
   #tint { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: soft-light; }
   #vig { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 40%, transparent 50%, rgba(0,0,0,.6) 100%); }
   #cap { position: absolute; left: 0; right: 0; bottom: 70px; text-align: center; font: 900 64px 'Inter Display', sans-serif;
          color: #f2eae2; text-shadow: 0 4px 0 #000, 0 0 30px rgba(0,0,0,.8); padding: 0 120px; }
+  #punch { position: absolute; left: 0; right: 0; bottom: 9%; text-align: center; font: 900 118px/1 'Inter Display', sans-serif;
+           color: #f2eae2; letter-spacing: -0.02em; -webkit-text-stroke: 3px #000;
+           text-shadow: 0 7px 0 #000, 0 0 40px rgba(0,0,0,.85); opacity: 0; }
+  #punch span { display: inline-block; margin: 0 .1em; }
+  #label { position: absolute; left: 6%; top: 9%; opacity: 0; }
+  #label .k { font: 800 26px 'Inter', sans-serif; letter-spacing: .28em; color: #d2492f; }
+  #label .t { font: 900 64px/1.05 'Inter Display', sans-serif; color: #f2eae2; margin-top: 8px;
+              text-shadow: 0 4px 0 #000, 0 0 24px rgba(0,0,0,.8); }
+  #label .bar { height: 6px; background: #d2492f; margin-top: 14px; transform-origin: 0 50%; }
   #grain { position: absolute; inset: 0; width: 100%; height: 100%; mix-blend-mode: overlay; }
 </style></head>
 <body>
 <div id="cam"><div id="shadow"></div></div>
-<div id="tint"></div><div id="flash" style="position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none"></div><div id="vig"></div><div id="cap"></div><canvas id="grain"></canvas>
+<canvas id="fx"></canvas>
+<div id="tint"></div><div id="flash" style="position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none"></div>
+<div id="vig"></div><div id="cap"></div><div id="punch"></div>
+<div id="label"><div class="k"></div><div class="t"></div><div class="bar"></div></div>
+<canvas id="grain"></canvas>
 <script>
   const cam = document.getElementById('cam');
   const bgSrc = param('bg', null);
@@ -46,19 +66,84 @@
   const tint = { cold: 'rgba(60,120,255,.35)', warm: 'rgba(255,140,60,.3)', none: 'transparent' }[param('tint', 'none')];
   document.getElementById('tint').style.background = tint;
   const shadow = document.getElementById('shadow'), capEl = document.getElementById('cap');
-
-  const flashes = param('flashes', []), zoom = param('zoom', 0);
+  const flashes = param('flashes', []), hits = param('hits', []), zoom = param('zoom', 0);
+  const intro = param('intro', 'pop'), env = param('env', []);
   const flashEl = document.getElementById('flash');
+
+  // Punchline: words pop in one after another.
+  const punch = param('punch', null), punchEl = document.getElementById('punch');
+  let punchWords = [];
+  if (punch) {
+    const acc = new Set(punch.accent || []);
+    punch.text.split(' ').forEach((w) => {
+      const s = document.createElement('span'); s.textContent = w;
+      if (acc.has(w)) s.style.color = BRAND.accent;
+      punchEl.appendChild(s); punchWords.push(s);
+    });
+    punchEl.style.fontSize = (punch.size || 118) * innerWidth / 1920 + 'px';
+  }
+  // Chapter label.
+  const label = param('label', null), labelEl = document.getElementById('label');
+  if (label) {
+    labelEl.querySelector('.k').textContent = label.kicker || '';
+    labelEl.querySelector('.t').textContent = label.text;
+    const sc = innerWidth / 1920;
+    labelEl.style.transformOrigin = '0 0';
+    labelEl.querySelector('.k').style.fontSize = 26 * sc + 'px';
+    labelEl.querySelector('.t').style.fontSize = 64 * sc + 'px';
+    labelEl.querySelector('.bar').style.height = 6 * sc + 'px';
+    // Put the card on the side away from the character so it never covers his face.
+    if (poses.length && param('x', 0.5) <= 0.5) { labelEl.style.left = 'auto'; labelEl.style.right = '6%'; labelEl.style.textAlign = 'right';
+      labelEl.querySelector('.bar').style.transformOrigin = '100% 50%'; }
+  }
+
+  // Particles, deterministic per frame.
+  const pType = param('particles', null);
+  const fx = document.getElementById('fx'), fctx = fx.getContext('2d');
+  const P = { embers: [70, '#ff9a4a'], dust: [60, '#ffd9a0'], feathers: [26, '#ffffff'], rain: [160, '#9fb8d8'], motes: [50, '#fff4d6'] };
+  function drawParticles(t) {
+    fx.width = innerWidth; fx.height = innerHeight;
+    if (!pType || !P[pType]) return;
+    const [n, col] = P[pType], W = fx.width, H = fx.height;
+    fctx.fillStyle = col; fctx.strokeStyle = col;
+    for (let i = 0; i < n; i++) {
+      const r1 = rand(i * 3 + 1), r2 = rand(i * 3 + 2), r3 = rand(i * 3 + 3);
+      if (pType === 'rain') {
+        const y = ((r2 * H + t * (900 + r3 * 500)) % (H + 80)) - 40, x = r1 * W + y * 0.12;
+        fctx.globalAlpha = 0.18 + r3 * 0.2; fctx.lineWidth = 1.5;
+        fctx.beginPath(); fctx.moveTo(x, y); fctx.lineTo(x - 6, y - 38); fctx.stroke();
+        continue;
+      }
+      const rise = pType === 'embers' ? -1 : (pType === 'feathers' ? 1 : -0.3);
+      const speed = pType === 'embers' ? 60 + r3 * 90 : (pType === 'feathers' ? 40 + r3 * 40 : 12 + r3 * 18);
+      let y = (r2 * H + rise * t * speed) % H; if (y < 0) y += H;
+      const x = r1 * W + Math.sin(t * (0.6 + r3) + i) * (pType === 'feathers' ? 60 : 25);
+      const size = pType === 'feathers' ? 5 + r3 * 7 : (pType === 'embers' ? 1.5 + r3 * 2.5 : 1 + r3 * 2.2);
+      const tw = 0.5 + 0.5 * Math.sin(t * (2 + r1 * 3) + i * 7);
+      fctx.globalAlpha = (pType === 'embers' ? 0.45 : 0.3) * (0.4 + 0.6 * tw);
+      fctx.save(); fctx.translate(x, y);
+      if (pType === 'feathers') { fctx.rotate(Math.sin(t + i) * 0.8); fctx.beginPath(); fctx.ellipse(0, 0, size * 2.2, size * 0.7, 0, 0, Math.PI * 2); fctx.fill(); }
+      else { fctx.shadowColor = col; fctx.shadowBlur = pType === 'embers' ? 10 : 6; fctx.beginPath(); fctx.arc(0, 0, size, 0, Math.PI * 2); fctx.fill(); }
+      fctx.restore();
+    }
+    fctx.globalAlpha = 1;
+  }
+
   window.sceneReady = () => imagesReady();
   window.renderFrame = (t) => {
     const W = innerWidth, H = innerHeight;
-    let fl = 0;
+    let fl = 0, hk = 0;
     flashes.forEach((f) => { if (t >= f) fl = Math.max(fl, 1 - prog(t, f, 0.35)); });
-    flashEl.style.opacity = fl * 0.9;
-    const [sx, sy] = shake(t, 18 * fl);
-    const snap = zoom * (1 - ease.out(prog(t, 0, 0.35)));
+    hits.forEach((h) => { if (t >= h) hk = Math.max(hk, 1 - prog(t, h, 0.3)); });
+    const introK = intro === 'pop' ? 1 - ease.out(prog(t, 0, 0.22)) : 0;
+    flashEl.style.opacity = Math.max(fl * 0.9, introK * 0.12);
+    const [sx, sy] = shake(t, 18 * fl + 12 * hk);
+    const snap = zoom * (1 - ease.out(prog(t, 0, 0.35))) + introK * 0.035;
     cam.style.transform = `translate(${sx}px, ${sy}px) scale(${1 + snap + push * ease.inOut(clamp(t / 8))})`;
-    // which pose is active, and crossfade over 0.12s
+
+    // Talking motion from the voice envelope (30 fps samples), smoothed.
+    const fi = Math.floor(t * 30);
+    const e = env.length ? (env[Math.min(env.length - 1, fi)] * 0.6 + (env[Math.max(0, fi - 1)] || 0) * 0.25 + (env[Math.max(0, fi - 2)] || 0) * 0.15) : 0;
     let active = 0;
     poses.forEach((p, i) => { if (t >= p.at) active = i; });
     poses.forEach((p, i) => {
@@ -66,13 +151,32 @@
       const breathe = 1 + Math.sin(t * 2.1) * 0.006;
       const swap = i === active ? ease.out(prog(t, p.at, 0.12)) : 0;
       const pop = i === active ? (1 - prog(t, p.at, 0.25)) * 0.03 : 0;
+      const talk = e * 0.018, tilt = Math.sin(t * 5.3) * e * 1.2;
       Object.assign(p.el.style, { height: h + 'px', left: (W * xC - w / 2) + 'px', opacity: swap,
-        transform: `scale(${breathe + pop}, ${breathe * (1 + Math.sin(t * 2.1) * 0.003) + pop})` });
+        transform: `rotate(${tilt}deg) scale(${breathe + pop + talk * 0.4}, ${breathe * (1 + Math.sin(t * 2.1) * 0.003) + pop + talk})` });
     });
     shadow.style.left = W * xC + 'px';
+    drawParticles(t);
+
     const c = caps.find((c) => t >= c.at && t < c.at + (c.dur || 2));
     capEl.textContent = c ? c.text : '';
     if (c) { const k = ease.back(prog(t, c.at, 0.2)); capEl.style.transform = `scale(${lerp(0.85, 1, k)})`; capEl.style.opacity = prog(t, c.at, 0.1); }
+
+    if (punch) {
+      const t0 = punch.at || 0;
+      punchEl.style.opacity = t >= t0 ? 1 : 0;
+      punchWords.forEach((s, i) => {
+        const k = prog(t, t0 + i * 0.12, 0.18);
+        s.style.opacity = k > 0 ? 1 : 0;
+        s.style.transform = `scale(${lerp(1.7, 1, ease.back(k))}) rotate(${(1 - ease.out(k)) * (rand(i + 5) - 0.5) * 8}deg)`;
+      });
+    }
+    if (label) {
+      const inK = ease.out(prog(t, 0.15, 0.4)), outK = prog(t, 2.6, 0.4);
+      labelEl.style.opacity = inK * (1 - outK);
+      labelEl.style.transform = `translateX(${(1 - inK) * -40}px)`;
+      labelEl.querySelector('.bar').style.transform = `scaleX(${ease.out(prog(t, 0.35, 0.5))})`;
+    }
     drawGrain(t, 0.05);
   };
 </script>

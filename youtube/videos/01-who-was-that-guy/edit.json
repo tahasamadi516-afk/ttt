@@ -53,7 +53,8 @@
     {
      "kind": "scene",
      "img": "epic-scriptorium-phone",
-     "push": 0.12
+     "push": 0.12,
+     "particles": "motes"
     },
     {
      "at": 0.45,
@@ -83,11 +84,12 @@
     {
      "kind": "title",
      "lines": [
-      "CHASE",
-      "OR GET CHASED"
+      "CHASE OR",
+      "GET CHASED.",
+      "THAT'S IT."
      ],
      "accent": [
-      "CHASED"
+      "IT."
      ],
      "gap": 0.14
     }
@@ -102,7 +104,18 @@
      "kind": "char",
      "bg": "kitchen",
      "pose": "talking",
-     "x": 0.35
+     "x": 0.35,
+     "punch": {
+      "text": "EVERYBODY LOSES.",
+      "accent": [
+       "LOSES."
+      ],
+      "at_frac": 0.72
+     },
+     "label": {
+      "kicker": "CHAPTER 2",
+      "text": "CHASE OR GET CHASED"
+     }
     }
    ]
   },
@@ -156,7 +169,14 @@
      "kind": "char",
      "bg": "kitchen",
      "pose": "facepalm",
-     "x": 0.35
+     "x": 0.35,
+     "punch": {
+      "text": "STUPID IDIOT.",
+      "accent": [
+       "IDIOT."
+      ],
+      "at_frac": 0.25
+     }
     }
    ]
   },
@@ -229,7 +249,19 @@
     {
      "kind": "scene",
      "img": "epic-mirror-reflection",
-     "push": 0.1
+     "push": 0.1,
+     "punch": {
+      "text": "THAT'S THE TRAP.",
+      "accent": [
+       "TRAP."
+      ],
+      "at_frac": 0.74
+     },
+     "label": {
+      "kicker": "CHAPTER 3",
+      "text": "YOU JUST WANNA BE WANTED"
+     },
+     "particles": "embers"
     }
    ]
   },
@@ -242,7 +274,14 @@
      "kind": "char",
      "bg": "bedroom",
      "pose": "pointing",
-     "x": 0.5
+     "x": 0.5,
+     "punch": {
+      "text": "ACTING IS FREE.",
+      "accent": [
+       "FREE."
+      ],
+      "at_frac": 0.68
+     }
     }
    ]
   },
@@ -298,7 +337,8 @@
     {
      "kind": "scene",
      "img": "epic-throne-phone",
-     "push": 0.18
+     "push": 0.18,
+     "particles": "embers"
     }
    ]
   },
@@ -323,7 +363,12 @@
     {
      "kind": "scene",
      "img": "epic-courtyard-sword",
-     "push": 0.1
+     "push": 0.1,
+     "label": {
+      "kicker": "CHAPTER 4",
+      "text": "THE GOALS I FORGOT"
+     },
+     "particles": "dust"
     }
    ]
   },
@@ -371,7 +416,8 @@
     {
      "kind": "scene",
      "img": "scene-gym-sad",
-     "push": 0.06
+     "push": 0.06,
+     "particles": "dust"
     }
    ]
   },
@@ -384,7 +430,14 @@
      "kind": "char",
      "bg": "bedroom",
      "pose": "awkward-laugh",
-     "x": 0.5
+     "x": 0.5,
+     "punch": {
+      "text": "TALENT, HONESTLY.",
+      "accent": [
+       "TALENT,"
+      ],
+      "at_frac": 0.55
+     }
     }
    ]
   },
@@ -425,7 +478,14 @@
      "bg": "bedroom",
      "pose": "deadpan",
      "x": 0.45,
-     "zoom": 0.08
+     "zoom": 0.08,
+     "punch": {
+      "text": "ME.",
+      "accent": [
+       "ME."
+      ],
+      "at_frac": 0.78
+     }
     }
    ]
   },
@@ -437,7 +497,12 @@
     {
      "kind": "scene",
      "img": "epic-heaven-wakeup",
-     "push": 0.12
+     "push": 0.12,
+     "label": {
+      "kicker": "CHAPTER 5",
+      "text": "THE WAKE-UP CALL"
+     },
+     "particles": "motes"
     }
    ]
   },
@@ -488,7 +553,14 @@
      "bg": "kitchen",
      "pose": "shrug",
      "x": 0.5,
-     "zoom": 0.08
+     "zoom": 0.08,
+     "punch": {
+      "text": "ONE WEEK.",
+      "accent": [
+       "WEEK."
+      ],
+      "at_frac": 0.18
+     }
     }
    ]
   },
@@ -503,7 +575,8 @@
      "push": 0.14,
      "flashes": [
       0.6
-     ]
+     ],
+     "particles": "rain"
     }
    ]
   },
@@ -549,7 +622,11 @@
      "kind": "char",
      "bg": "kitchen",
      "pose": "talking",
-     "x": 0.6
+     "x": 0.6,
+     "label": {
+      "kicker": "CHAPTER 6",
+      "text": "THEY WANT YOUR MONEY"
+     }
     }
    ]
   },
@@ -612,7 +689,15 @@
     {
      "kind": "scene",
      "img": "epic-dagger-pillow",
-     "push": 0.08
+     "push": 0.08,
+     "punch": {
+      "text": "THAT'S IT.",
+      "accent": [
+       "IT."
+      ],
+      "at_frac": 0.62
+     },
+     "particles": "embers"
     }
    ]
   },
@@ -625,7 +710,14 @@
      "kind": "char",
      "bg": "kitchen",
      "pose": "puppy-face",
-     "x": 0.5
+     "x": 0.5,
+     "punch": {
+      "text": "IT'S NOT.",
+      "accent": [
+       "NOT."
+      ],
+      "at_frac": 0.8
+     }
     }
    ]
   },
@@ -639,7 +731,14 @@
      "bg": "kitchen",
      "pose": "pointing",
      "x": 0.5,
-     "zoom": 0.1
+     "zoom": 0.1,
+     "punch": {
+      "text": "DON'T EAT SLOP.",
+      "accent": [
+       "SLOP."
+      ],
+      "at_frac": 0.5
+     }
     }
    ]
   },
@@ -667,7 +766,8 @@
     {
      "kind": "scene",
      "img": "scene-walk-outside",
-     "push": 0.06
+     "push": 0.06,
+     "particles": "motes"
     }
    ]
   },
@@ -693,7 +793,12 @@
     {
      "kind": "scene",
      "img": "scene-kid-park",
-     "push": 0.08
+     "push": 0.08,
+     "label": {
+      "kicker": "CHAPTER 7",
+      "text": "YOU CAN BE REBORN"
+     },
+     "particles": "motes"
     }
    ]
   },
@@ -732,7 +837,8 @@
     {
      "kind": "scene",
      "img": "epic-heaven-reborn",
-     "push": 0.1
+     "push": 0.1,
+     "particles": "feathers"
     }
    ]
   },
@@ -758,7 +864,8 @@
     {
      "kind": "scene",
      "img": "scene-family-sunset",
-     "push": 0.06
+     "push": 0.06,
+     "particles": "motes"
     }
    ]
   },
@@ -818,7 +925,11 @@
      "bg": null,
      "pose": "intense",
      "x": 0.5,
-     "height": 1.0
+     "height": 1.0,
+     "label": {
+      "kicker": "CHAPTER 8",
+      "text": "IT'S ABOUT BEING ALIVE"
+     }
     }
    ]
   },
@@ -854,7 +965,8 @@
     {
      "kind": "scene",
      "img": "scene-walk-outside",
-     "push": 0.1
+     "push": 0.1,
+     "particles": "motes"
     }
    ]
   },
