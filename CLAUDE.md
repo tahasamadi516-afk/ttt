@@ -25,3 +25,9 @@ remove this reminder.
 - graphify: code knowledge graph (run once the repo has real code)
 - find-skills: search skills.sh for skills that fit a task
 - yt-dlp: reads public YouTube video lists (youtube.com is allowed on the network)
+
+## Documentary skill
+`/documentary` (in `.claude/skills/documentary/`, checked into this repo) turns one idea
+into a cinematic 3D documentary blueprint: case file, scene table, image prompts,
+30-second video prompts, narration script and edit checklist. Prompts only; it never
+generates media. Run `/documentary` with no idea to see the process.
