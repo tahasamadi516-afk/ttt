@@ -1,9 +1,11 @@
-# Voice profile (DRAFT, built from the video 01 script; gaps marked TODO)
+# Voice profile
+
+Built from the video 01 script and the creator's answers.
 
 ## Who it's for
-TODO: one specific viewer. Best guess from the script: a guy (late teens to 20s) who
-trains or has big goals, has been losing months to dating apps and situationships,
-and half-knows he's wasting his time.
+Broad: English speakers, mainly Americans, mainly ages 15 to 35.
+Viewer to write for: someone in that range with big goals who has been losing
+months to dating apps and situationships, and half-knows he's wasting his time.
 
 ## How he talks
 - Storytime, first person, like talking to a friend. Starts mid-moment
@@ -24,14 +26,16 @@ bro, man, stupid, idiot, crazy, "use your mind", "for real", "anyway(s)",
 "wait. Wait a minute.", "relax", "find a way"
 
 ## Words he never uses
-TODO. Likely avoided: guru or self-help jargon ("level up", "alpha/sigma",
-"manifest"), and therapy-speak.
+- "son of a bitch"
+- Swearing in general, unless he chooses it for emphasis. When writing for him,
+  don't add swear words. Keep only the ones he put in himself.
 
 ## Claims he won't make
-TODO. Note: the script presents his own experience and opinion. It never cites
-studies or stats.
+Not stated yet. Default from the script: speak from his own experience and
+opinion, and never invent stats or studies.
 
 ## Format
-TODO: length and cadence. Video 01 is a personal storytime essay that ends on a
-wider point about life. Visuals: the animated character, motion graphics, and
+- Length: about 9 minutes
+- Cadence: as often as videos are ready (daily is the goal). Publish at 6 AM.
+- Style: personal storytime essay that ends on a wider point about life. Visuals: the animated character, motion graphics, and
 documentary sections.
