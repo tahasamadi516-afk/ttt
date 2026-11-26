@@ -43,12 +43,6 @@ When writing, name which of these the piece (or each short) is aimed at.
   "Don't fail us. Do your part."
 - Faith comes up naturally sometimes (prayer, God knows what's good for you).
 
-## Words they never use (inferred, not confirmed)
-- Corporate/creator filler: "in today's video", "smash that like button", "without further
-  ado", "let's dive in", "game-changer", "unlock your potential", "journey".
-- Soft hedging that kills the punch: "perhaps", "it could be argued", "some might say".
-- Therapy-speak cushioning: "valid", "holding space", "toxic" as a catch-all.
-
 ## Words they do use
 deserve, work for it, get up, do it, step by step, don't overcomplicate it, bro, honestly,
 not gonna lie, trust me, you know what I'm saying, the struggle, act like it.
@@ -57,6 +51,9 @@ not gonna lie, trust me, you know what I'm saying, the struggle, act like it.
 - None given. Creator writes the scripts and owns the claims. Never add facts, stats or
   advice they didn't say.
 
+## Voice (audio)
+Cloned from the creator's own recording: see `youtube/voice-clone/` and `CLAUDE.md`.
+
 ## Format
 - One long-form video (~9 min) per idea, cut into ~9 one-minute shorts.
 - Posted to YouTube and Instagram (long + shorts).
@@ -64,9 +61,13 @@ not gonna lie, trust me, you know what I'm saying, the struggle, act like it.
 - Faceless (voiceover + visuals). English.
 
 ## Rule for scripts
-The creator brings the script ready. Use THEIR words, don't invent new ones, and keep their
-tone. But rearranging is allowed and wanted: reshuffle the order, pull the strongest line
-up front as a hook, tighten, cut, and shape it so it grabs attention and holds (hooks,
-open loops, retention beats, shorts that land on their own).
-Not allowed: adding new claims, facts or advice they didn't say, or swapping their words
-for polished creator-speak. Titles, descriptions and shorts must sound like them too.
+The creator gives raw ideas in their own words (spoken-style, English is their second language).
+What to do with them:
+- Keep their exact words, ideas and tone. Don't invent new ideas or claims.
+- Reframe into a script that works as a video: strongest line first as the hook, tight order,
+  open loops, a landing at the end. Long form (~9 min) that cuts into ~1 min shorts.
+- If they ask for a story, write one that holds attention (tension, a turn, a payoff).
+- Fix grammar and wording mistakes quietly, but keep it sounding like them (short, direct,
+  casual, swears allowed). No fancy words they wouldn't say.
+- No new facts, stats or advice they didn't say.
+- No "never-say" list: they won't say what doesn't fit them, so just follow how they talk.

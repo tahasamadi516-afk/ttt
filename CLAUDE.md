@@ -45,3 +45,11 @@ Style anchor image: `.claude/skills/motion-design/paper-cut-style.jpg`.
 ## Sample clip: `clips/deserve-hook/`
 13.5s vertical (1080x1920) paper-cut hook using the creator's own words (situationship story). Made with: lemo-opuscar renderer (page in `index.html`), Kokoro voice (`voice/`), earshot paper foley (`sfx/`), mixed in `mix.py`, Blender-skills "stop-motion-craft" look as art direction. Final: `clips/deserve-hook/deserve-hook-clip.mp4`.
 Rebuild: render with `~/lemo-opuscar/core/render/video.mjs`, then `mix.py`, then ffmpeg mux. ffmpeg here is 6.1 (lemo wants 7+), so do the mux by hand and check loudness with `ebur128`.
+
+## Voice clone (creator's own voice)
+- Files: `youtube/voice-clone/` (`ref.wav` 12s reference, `full-clean.wav` 95s cleaned recording, `clone.py`, `polish.sh`, `setup.sh`).
+- Each fresh session: `bash youtube/voice-clone/setup.sh` (installs Chatterbox, CPU, a few min). Needs the Hugging Face hosts allowed on the Default environment (done).
+- Make a line: `~/chatterbox/.venv/bin/python youtube/voice-clone/clone.py youtube/voice-clone/ref.wav out.wav "text"` (~1 min per short line on CPU). Then `youtube/voice-clone/polish.sh out.wav out_pro.wav`.
+- Creator said quality is fine for now. Optional later: re-record in a quiet room, or try the Resemble Enhance tool.
+- Chatterbox adds an inaudible AI watermark. Never generate hateful terms in the voice (declined "goyslop").
+- Scripts: see "Rule for scripts" in `youtube/voice.md` (their words, reframed as a hook, grammar fixed).
