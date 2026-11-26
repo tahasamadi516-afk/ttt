@@ -1,5 +1,8 @@
 # Project notes
 
+## How to talk to me
+Keep messages as short as possible while still complete. Casual, plain, talk like me.
+
 ## Goal
 Make YouTube videos using the YouTube agent skills (yt-* skills: yt-plan, yt-script,
 yt-package, yt-seo, yt-edit, yt-shorts, yt-chapters, yt-retention, yt-viral, yt-audit,
