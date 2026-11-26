@@ -58,11 +58,13 @@ Not stated yet. Default from the script: speak from his own experience and
 opinion, and never invent stats or studies.
 
 ## Voice (audio)
-**Channel voice: Kokoro `am_puck`** (an American male voice; the creator picked it over his own
-clone because he didn't like the accent). Run `youtube/voice-clone/narrate_kokoro.py`.
-Expressiveness tags (@0.7) map to speaking speed. The Chatterbox clone of his own voice
-(`narrate.py`, `ref-pro.wav`) is kept as a fallback.
-Swears are bleeped in the voiceover (his call, for ad safety).
+**Channel voice: "E"**, a designed voice (male, early 20s, General American, clear medium-deep,
+natural and grounded, like thinking out loud to a friend). Qwen3-TTS, Apache 2.0, free for
+commercial use. Details: `youtube/voice-clone/voice-e.md`. Narrate with `narrate_qwen.py`.
+Scripts must be written FOR this voice: short punchy sentences that end hard, no filler, no
+acted-out voices (put those on screen instead). Video 01 v1 vs v3 shows the difference.
+Swearing: f-words bleeped; "shit" becomes "crap", "hell" becomes "heck".
+Older options kept as fallbacks: Kokoro am_puck (`narrate_kokoro.py`), his own clone (`narrate.py`).
 
 ## Format
 - Faceless: voiceover plus the animated character, motion graphics and documentary visuals.

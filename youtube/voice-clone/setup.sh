@@ -30,3 +30,10 @@ if ! [ -x $K/bin/python ] || ! $K/bin/python -c "import kokoro, en_core_web_sm" 
   uv pip install --python $K/bin/python $W
 fi
 echo "channel voice: $K/bin/python <repo>/youtube/voice-clone/narrate_kokoro.py <narration.txt> <voice_dir>"
+
+# Qwen3-TTS: the channel voice "E" (see voice-e.md). Weights download from Hugging Face on first use.
+Q=~/qwentts/.venv
+if ! [ -x $Q/bin/python ] || ! $Q/bin/python -c "import qwen_tts" 2>/dev/null; then
+  mkdir -p ~/qwentts && (cd ~/qwentts && uv venv --python 3.11 .venv && uv pip install --python .venv/bin/python qwen-tts soundfile)
+fi
+echo "channel voice E: $Q/bin/python <repo>/youtube/voice-clone/narrate_qwen.py <narration.txt> <voice_dir>"
