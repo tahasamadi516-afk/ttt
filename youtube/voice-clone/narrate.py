@@ -6,6 +6,7 @@ Run with the chatterbox venv (see setup.sh):
 narration.txt format (see youtube/videos/*/narration.txt):
   - one line = one clip, saved as out_dir/line_NNN.wav
   - [BLEEP] marks a censored word; a bleep tone goes there
+  - " | " is a beat (0.45 s pause), " || " a long pause (0.9 s): phrases are voiced separately
   - a line starting with "@0.7 " sets expressiveness for that line (default 0.5)
   - a blank line = a paragraph break (a longer pause in the full mix)
   - lines starting with # are comments
@@ -27,7 +28,8 @@ from chatterbox.tts import ChatterboxTTS  # noqa: E402
 # ref-pro.wav: a clean 15 s cut of full-clean.wav run through Resemble Enhance (studio, no room echo).
 # The clone copies the room sound of its reference, so a clean reference = a clean voice.
 REF = Path(__file__).with_name("ref-pro.wav")
-MAX_CHARS = 220  # long inputs make the model drift; split at sentence ends
+MAX_CHARS = 220
+CFG = 0.3  # lower = slower, more deliberate delivery (0.5 is the default pace)  # long inputs make the model drift; split at sentence ends
 
 
 def parse(path):
@@ -89,12 +91,15 @@ def trim(w, sr, thresh=0.01):
 
 def main():
     argv = sys.argv[1:]
-    args = [a for i, a in enumerate(argv) if not a.startswith("--") and not (i and argv[i - 1] in ("--ref", "--only"))]
+    args = [a for i, a in enumerate(argv) if not a.startswith("--") and not (i and argv[i - 1] in ("--ref", "--only", "--cfg"))]
     src, out_dir = args[0], Path(args[1])
     only = None
     global REF
     if "--ref" in sys.argv:
         REF = Path(sys.argv[sys.argv.index("--ref") + 1])
+    global CFG
+    if "--cfg" in sys.argv:
+        CFG = float(sys.argv[sys.argv.index("--cfg") + 1])
     if "--only" in sys.argv:
         only = {int(x) for x in sys.argv[sys.argv.index("--only") + 1].split(",")}
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -109,22 +114,26 @@ def main():
         if only and i not in only:
             continue
         parts, bleeps = [], []
-        pieces = ln["text"].split("[BLEEP]")
-        for j, piece in enumerate(pieces):
-            piece = piece.strip()
-            if piece and re.search(r"\w", piece):
-                for c in chunks(piece):
-                    w = model.generate(c, audio_prompt_path=str(REF),
-                                       exaggeration=ln["exaggeration"], cfg_weight=0.5)
-                    parts += [trim(w, sr), silence(sr, 0.12)]
-                if parts:
-                    parts.pop()  # no gap before the bleep
-            if j < len(pieces) - 1:
+        # Tokens: text phrases, [BLEEP], "|" (beat, 0.45 s) and "||" (long pause, 0.9 s).
+        toks = [t for t in re.split(r"(\[BLEEP\]|\|\||\|)", ln["text"]) if t.strip()]
+        for tok in toks:
+            tok = tok.strip()
+            if tok == "||":
+                parts.append(silence(sr, 0.9))
+            elif tok == "|":
+                parts.append(silence(sr, 0.45))
+            elif tok == "[BLEEP]":
                 parts.append(silence(sr, 0.04))
                 pos = sum(p.shape[1] for p in parts) / sr
                 b = bleep(sr)
                 bleeps.append([round(pos, 4), round(b.shape[1] / sr, 4)])
                 parts += [b, silence(sr, 0.06)]
+            elif re.search(r"\w", tok):
+                for c in chunks(tok):
+                    w = model.generate(c, audio_prompt_path=str(REF),
+                                       exaggeration=ln["exaggeration"], cfg_weight=CFG, temperature=0.8)
+                    parts += [trim(w, sr), silence(sr, 0.12)]
+                parts.pop()
         ln["bleeps"] = bleeps
         (out_dir / f"line_{i:03d}.json").write_text(json.dumps(bleeps))
         ta.save(str(f), torch.cat(parts, dim=1), sr)

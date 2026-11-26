@@ -141,6 +141,16 @@ def main():
                   f"afade=t=out:st={max(0, dur - out_fade):.3f}:d={out_fade},volume=0.30,adelay={ms}|{ms}[m{n}]")
         labels.append(f"[m{n}]")
         n += 1
+    # Continuous a cappella bed under the whole video (very low), dipped out under the epic cues.
+    bed_cfg = plan.get("bed")
+    if bed_cfg:
+        ins += ["-stream_loop", "-1", "-i", str(ROOT / bed_cfg["file"])]
+        dips = "+".join(f"between(t,{line_start(c['lines'][0]) - 0.3:.2f},{line_start(c['lines'][1] + 1):.2f})"
+                        for c in plan["music"]) or "0"
+        fx.append(f"[{n}:a]aresample=48000,atrim=0:{end_time:.3f},asetpts=PTS-STARTPTS,"
+                  f"afade=t=in:d=2,afade=t=out:st={end_time - 3:.3f}:d=3,volume={bed_cfg.get('volume', 0.12)},"
+                  f"volume=0.15:enable='{dips}'[bed0]")
+        n += 1  # not ducked: it's already quiet, and should stay steady under the voice
     for line, frac, name, vol in plan["sfx"]:
         a, b = line_start(line), line_start(line + 1)
         ms = int((a + (b - a) * frac) * 1000)
@@ -154,7 +164,8 @@ def main():
     if bed:
         fx.append("".join(bed) + f"amix=inputs={len(bed)}:normalize=0[bed]")
         fx.append("[bed][vkey]sidechaincompress=threshold=0.03:ratio=6:attack=20:release=300[duck]")
-        fx.append("[vmain][duck]amix=inputs=2:normalize=0,alimiter=limit=0.95[out]")
+        tail = "[bed0]" if bed_cfg else ""
+        fx.append(f"[vmain][duck]{tail}amix=inputs={3 if bed_cfg else 2}:normalize=0,alimiter=limit=0.95[out]")
     else:
         fx.append("[vmain]anull[out]")
     sh(["ffmpeg", "-loglevel", "error", "-y", *ins, "-filter_complex", ";".join(fx), "-map", "[out]",

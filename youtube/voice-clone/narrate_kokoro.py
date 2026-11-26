@@ -69,18 +69,22 @@ def main():
     pipe = KPipeline(lang_code="a")
     lines = parse(src)
     for i, ln in enumerate(lines, 1):
-        speed = round(1.0 + (ln["exaggeration"] - 0.5) * 0.3, 3)
+        speed = round(0.9 + (ln["exaggeration"] - 0.5) * 0.25, 3)  # a little slower than default overall
         parts, bleeps = [], []
-        pieces = ln["text"].split("[BLEEP]")
-        for j, piece in enumerate(pieces):
-            piece = piece.strip()
-            if piece and re.search(r"\w", piece):
-                audio = np.concatenate([np.asarray(a) for _, _, a in pipe(piece, voice=voice, speed=speed)])
-                parts.append(trim(audio.astype(np.float32)))
-            if j < len(pieces) - 1:
+        toks = [t for t in re.split(r"(\[BLEEP\]|\|\||\|)", ln["text"]) if t.strip()]
+        for tok in toks:
+            tok = tok.strip()
+            if tok == "||":
+                parts.append(silence(0.9))
+            elif tok == "|":
+                parts.append(silence(0.45))
+            elif tok == "[BLEEP]":
                 parts.append(silence(0.04))
                 bleeps.append([round(sum(len(p) for p in parts) / SR, 4), 0.32])
                 parts += [bleep(), silence(0.06)]
+            elif re.search(r"\w", tok):
+                audio = np.concatenate([np.asarray(a) for _, _, a in pipe(tok, voice=voice, speed=speed)])
+                parts.append(trim(audio.astype(np.float32)))
         wav = np.concatenate(parts)
         f = out_dir / f"line_{i:03d}.wav"
         sf.write(f, wav, SR)
