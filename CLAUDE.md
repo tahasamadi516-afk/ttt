@@ -43,3 +43,8 @@ final MP4 (ffmpeg). Each video lives in `projects/<slug>/`.
 - Needs: ffmpeg (preinstalled), `pip install edge-tts` (not in the setup script yet).
 - edge-tts needs network access to `speech.platform.bing.com`, which this environment
   currently blocks. Only the final voice/cut step needs it.
+
+## Motion design skill
+`/motion-design` (in `.claude/skills/motion-design/`) turns one image into a paper-cut
+stop-motion clip: 3 prompts (paper-cut image, 9-panel sheet, animation). Prompts only.
+Style anchor image: `.claude/skills/motion-design/paper-cut-style.jpg`.
