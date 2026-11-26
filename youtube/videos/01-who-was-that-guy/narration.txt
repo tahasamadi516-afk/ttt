@@ -1,80 +1,81 @@
 # Video 01 narration, v3: hook-first, punchier, with callbacks ("that's it", "who was that guy").
 # Same 62 beats as v1 (narration-v1.txt). v2 is in git history.
+# @emotion = which emotion reference voices the line (calm, dry, frustrated, sad, warm, amused, serious, shocked).
 # One line = one voice clip. [BLEEP] = censored word. Blank line = longer pause.
-If you're chasing someone who doesn't want you, you're losing more than time.
-This morning I'm making breakfast. And boom. Flashbacks. Five months on dating apps.
-Five months I'm never getting back. Bro. Who was that guy?
+@calm If you're chasing someone who doesn't want you, you're losing more than time.
+@calm This morning I'm making breakfast. And boom. Flashbacks. Five months on dating apps.
+@amused Five months I'm never getting back. Bro. Who was that guy?
 
-Here's the game nobody explains. Chase or get chased. That's it.
-You chase someone who doesn't want you. Someone chases you, and you don't want them. Everybody loses.
-And everybody's trying to prove something. Prove what? Nobody knows.
-"Hey, I'm worth looking at." Just [BLEEP] off. I don't even care if you exist.
-That should've been my mentality. Was it? No. Of course not. Stupid idiot.
+@dry Here's the game nobody explains. Chase or get chased. That's it.
+@calm You chase someone who doesn't want you. Someone chases you, and you don't want them. Everybody loses.
+@amused And everybody's trying to prove something. Prove what? Nobody knows.
+@dry "Hey, I'm worth looking at." Just [BLEEP] off. I don't even care if you exist.
+@frustrated That should've been my mentality. Was it? No. Of course not. Stupid idiot.
 
-I didn't even want that person. Not even a little.
-One minute. That's all it would've taken. One minute of using my brain.
-But they pull away, and suddenly I'm the one trying. Did I do something? Can I prove I'm better? Am I good enough?
-Good enough for what? I didn't even like you.
+@frustrated I didn't even want that person. Not even a little.
+@calm One minute. That's all it would've taken. One minute of using my brain.
+@dry But they pull away, and suddenly I'm the one trying. Did I do something? Can I prove I'm better? Am I good enough?
+@frustrated Good enough for what? I didn't even like you.
 
-It's not them you want. It's the attention. You want to be wanted. That's the trap.
-They act high value, so you assume they are. They might not be. Acting is free.
-And the more desperate you get, the further they go. Like a cat. Chase the cat, the cat leaves.
-It's Gojo's Infinity, and daddy Mahoraga isn't on your side. You get closer and closer. You never touch it.
+@serious It's not them you want. It's the attention. You want to be wanted. That's the trap.
+@dry They act high value, so you assume they are. They might not be. Acting is free.
+@amused And the more desperate you get, the further they go. Like a cat. Chase the cat, the cat leaves.
+@amused It's Gojo's Infinity, and daddy Mahoraga isn't on your side. You get closer and closer. You never touch it.
 
-The funny part? I saw it happening. In real time. I looked at it, said "interesting," and kept going.
-It's like a drug.
-Meanwhile, my actual life is just sitting there. Hello? Remember me?
+@amused The funny part? I saw it happening. In real time. I looked at it, said "interesting," and kept going.
+@serious It's like a drug.
+@dry Meanwhile, my actual life is just sitting there. Hello? Remember me?
 
-I was obsessed with training. Obsessed. One word in my head. Perfection.
-I had goals so big I couldn't say them out loud. People would think I'm crazy.
-And what happened to them? Forgot them. Completely. For a situation on my phone.
-Now I'm training sad, thinking about one person, while making another person sad.
-How do you even manage that? Talent, honestly.
+@serious I was obsessed with training. Obsessed. One word in my head. Perfection.
+@serious I had goals so big I couldn't say them out loud. People would think I'm crazy.
+@sad And what happened to them? Forgot them. Completely. For a situation on my phone.
+@sad Now I'm training sad, thinking about one person, while making another person sad.
+@amused How do you even manage that? Talent, honestly.
 
-So how did I fix it? Genius over here jumped into a new situationship.
-Beautiful. Amazing. Stupid. Everyone could see it except the guy doing it. Me.
+@dry So how did I fix it? Genius over here jumped into a new situationship.
+@dry Beautiful. Amazing. Stupid. Everyone could see it except the guy doing it. Me.
 
-Then I got my wake-up call.
-I'd been chased before. Everybody has. But not like this.
-We'd known each other less than a week, and I was already her whole life.
-I don't answer for twenty minutes. I open my phone. Twenty messages.
-Do you wanna go? Do you still wanna talk to me? Do I even matter to you?
-It's been a week. One week. And your whole life already revolves around me?
-And then it hit me. Wait. Do I act like this?
-Not that bad. Maybe five percent. But even one percent, I'm not accepting that from myself.
+@serious Then I got my wake-up call.
+@calm I'd been chased before. Everybody has. But not like this.
+@shocked We'd known each other less than a week, and I was already her whole life.
+@shocked I don't answer for twenty minutes. I open my phone. Twenty messages.
+@dry Do you wanna go? Do you still wanna talk to me? Do I even matter to you?
+@frustrated It's been a week. One week. And your whole life already revolves around me?
+@shocked And then it hit me. Wait. Do I act like this?
+@calm Not that bad. Maybe five percent. But even one percent, I'm not accepting that from myself.
 
-Hold on. My neighbor is staring at me through his window. What the heck. Anyway.
+@amused Hold on. My neighbor is staring at me through his window. What the heck. Anyway.
 
-I'm not saying I'm better than her. Everybody is better than this. Even her.
-We're all just fooled. Movies and social media sell us the drama. We think we want it. We don't.
-And these apps? Use your head. They don't want you to leave. They want your money. You stay stuck, they stay happy.
+@warm I'm not saying I'm better than her. Everybody is better than this. Even her.
+@calm We're all just fooled. Movies and social media sell us the drama. We think we want it. We don't.
+@dry And these apps? Use your head. They don't want you to leave. They want your money. You stay stuck, they stay happy.
 
-So leave. And don't tell me you're "resisting."
-If a knife is cutting you, you don't resist the knife. You stay away from it. That's it. Let it heal.
-But we keep going back. Maybe this time the knife is different. It's not.
+@dry So leave. And don't tell me you're "resisting."
+@serious If a knife is cutting you, you don't resist the knife. You stay away from it. That's it. Let it heal.
+@dry But we keep going back. Maybe this time the knife is different. It's not.
 
-Put the phone down. Don't eat slop.
-And if I catch you at McDonald's, I hope God strikes you with thunder. Do you know how many ingredients are in that thing?
-Go outside. Look around. Go back to the old ways.
-Yeah, it's not that easy anymore. Doesn't matter. Find a way.
+@calm Put the phone down. Don't eat slop.
+@amused And if I catch you at McDonald's, I hope God strikes you with thunder. Do you know how many ingredients are in that thing?
+@warm Go outside. Look around. Go back to the old ways.
+@calm Yeah, it's not that easy anymore. Doesn't matter. Find a way.
 
-Remember being a kid? Everything was bright. You enjoyed everything. That's your natural state.
-You can go back. Give it a month. Maybe two.
-"My life is ruined." Relax. Remember that high school relationship? The one that was forever? Yeah.
-You survived. And if you're in high school right now, you will too.
+@warm Remember being a kid? Everything was bright. You enjoyed everything. That's your natural state.
+@warm You can go back. Give it a month. Maybe two.
+@amused "My life is ruined." Relax. Remember that high school relationship? The one that was forever? Yeah.
+@warm You survived. And if you're in high school right now, you will too.
 
-You can be reborn. For real. People change their whole lives. You're not stuck being the same person forever.
-You're human. Humans make mistakes. It wouldn't be fair if you only got one shot.
-I believe that's from God. Whatever you believe, that's up to you.
-I'm not saying don't chase love. Chase a healthy one. A loving wife. A loving husband. Hardworking. Respectful. Grinding for each other. Kids.
-Not whatever that was on the app.
+@warm You can be reborn. For real. People change their whole lives. You're not stuck being the same person forever.
+@warm You're human. Humans make mistakes. It wouldn't be fair if you only got one shot.
+@warm I believe that's from God. Whatever you believe, that's up to you.
+@warm I'm not saying don't chase love. Chase a healthy one. A loving wife. A loving husband. Hardworking. Respectful. Grinding for each other. Kids.
+@dry Not whatever that was on the app.
 
-Honestly, this video was never supposed to be about dating apps. [BLEEP] the dating apps.
-We sit there going, this piece of crap looks good. No, this piece of crap is bad. It's all crap.
+@frustrated Honestly, this video was never supposed to be about dating apps. [BLEEP] the dating apps.
+@amused We sit there going, this piece of crap looks good. No, this piece of crap is bad. It's all crap.
 
-I'm talking about being alive. We say "get a life" like it means "get a job."
-People go crazy over gold. What the [BLEEP] is gold? It's a metal.
-But being alive? Memories. Feelings. A character you get to build. And that time isn't coming back.
-You could be doing anything with it. And you're checking if somebody texted back.
-Don't waste it, man. Enjoy it. So one day you look back and ask, who was that guy? And you're proud of him.
-Don't do anything illegal today. Love you all equally. Bye.
+@calm I'm talking about being alive. We say "get a life" like it means "get a job."
+@amused People go crazy over gold. What the [BLEEP] is gold? It's a metal.
+@warm But being alive? Memories. Feelings. A character you get to build. And that time isn't coming back.
+@sad You could be doing anything with it. And you're checking if somebody texted back.
+@warm Don't waste it, man. Enjoy it. So one day you look back and ask, who was that guy? And you're proud of him.
+@amused Don't do anything illegal today. Love you all equally. Bye.

@@ -1,9 +1,9 @@
 {
  "_doc": "Edit plan for video 01. Each entry covers narration lines [from..to] (numbers from narration.txt, comments/blank lines skipped). shots split that time by 'at' (0..1 fraction). kinds: char (cutout 'pose' on 'bg'), scene (full image, push-in), title (kinetic text), messages (phone pile-up). music: dark/warm beds by line range. sfx: [line, fraction, file]. Paths are relative to the repo root.",
  "defaults": {
-  "gap": 0.45,
-  "break": 1.1,
-  "tail": 2.0
+  "gap": 0.6,
+  "break": 1.35,
+  "tail": 2.5
  },
  "bgs": {
   "kitchen": "youtube/assets/backgrounds/bg-kitchen-morning.png",

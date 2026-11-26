@@ -5,7 +5,7 @@ Run with the qwentts venv (see setup.sh):
 
 Same narration.txt format and output (line_NNN.wav + lines.json with bleep positions) as the
 other narrators, so build_video.py works unchanged. Lines are voiced whole so the delivery stays
-natural; [BLEEP] splits a line into pieces with a bleep tone between them.
+natural; "@sad" etc. picks the emotion reference (emotions/sad.wav) for that line; [BLEEP] splits a line into pieces with a bleep tone between them.
 Clips already generated are skipped, so it can resume after an interruption.
 """
 import json
@@ -32,9 +32,13 @@ def parse(path):
             if lines:
                 lines[-1]["break_after"] = True
             continue
-        s = re.sub(r"^@(\d*\.?\d+)\s+", "", s)          # expressiveness tags are not used here
+        emo = "calm"
+        m = re.match(r"^@([a-z]+)\s+(.*)$", s)
+        if m:
+            emo, s = m.group(1), m.group(2)
+        s = re.sub(r"^@(\d*\.?\d+)\s+", "", s)          # numeric expressiveness tags are not used here
         s = re.sub(r"\s*\|\|?\s*", " ", s).strip()        # nor manual pause marks: delivery is natural
-        lines.append({"text": s, "break_after": False})
+        lines.append({"text": s, "emotion": emo, "break_after": False})
     return lines
 
 
@@ -47,14 +51,19 @@ def main():
     torch.set_num_threads(4)
     m = Qwen3TTSModel.from_pretrained("Qwen/Qwen3-TTS-12Hz-1.7B-Base", device_map="cpu",
                                       dtype=torch.float32, attn_implementation="sdpa")
-    prompt = m.create_voice_clone_prompt(ref_audio=str(REF_WAV), ref_text=REF_TXT.read_text().strip(),
-                                         x_vector_only_mode=False)
+    # One clone prompt per emotion (emotions/<name>.wav from make_emotion_refs.py); falls back to E.
+    prompts = {}
+    for wav in sorted((HERE / "emotions").glob("*.wav")):
+        prompts[wav.stem] = m.create_voice_clone_prompt(ref_audio=str(wav), ref_text=wav.with_suffix(".txt").read_text().strip(),
+                                                        x_vector_only_mode=False)
+    default = m.create_voice_clone_prompt(ref_audio=str(REF_WAV), ref_text=REF_TXT.read_text().strip(),
+                                          x_vector_only_mode=False)
     sr = None
     lines = parse(src)
 
-    def say(text):
+    def say(text, emo="calm"):
         nonlocal sr
-        w, sr = m.generate_voice_clone(text=text, language="English", voice_clone_prompt=prompt)
+        w, sr = m.generate_voice_clone(text=text, language="English", voice_clone_prompt=prompts.get(emo, default))
         a = np.asarray(w[0], dtype=np.float32)
         idx = np.nonzero(np.abs(a) > 0.008)[0]
         if len(idx):
@@ -72,7 +81,7 @@ def main():
         for j, piece in enumerate(pieces):
             piece = piece.strip()
             if piece and re.search(r"\w", piece):
-                parts.append(say(piece))
+                parts.append(say(piece, ln["emotion"]))
             if j < len(pieces) - 1:
                 parts.append(np.zeros(int(sr * 0.04), np.float32))
                 start = sum(len(p) for p in parts) / sr
@@ -94,7 +103,7 @@ def main():
             info = sf.info(str(f))
             ln["duration"] = round(info.frames / info.samplerate, 3)
             ln["bleeps"] = json.loads(meta.read_text())["bleeps"] if meta.exists() else []
-            ln["voice"] = "qwen3:E"
+            ln["voice"] = f"qwen3:E:{ln['emotion']}"
     (out_dir / "lines.json").write_text(json.dumps(lines, indent=1))
     print("done:", out_dir / "lines.json")
 
