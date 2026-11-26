@@ -41,6 +41,8 @@ def main():
     plan = json.loads((vdir / "edit.json").read_text())
     lines = json.loads((vdir / "voice" / "lines.json").read_text())
     d = plan["defaults"]
+    # Speaking speed: < 1 slows the voice down without changing its pitch (0.9 = 10% slower).
+    tempo = float(d.get("voice_tempo", 1.0))
     build = vdir / ("build-preview" if preview else "build")
     (build / "shots").mkdir(parents=True, exist_ok=True)
 
@@ -49,7 +51,7 @@ def main():
     starts = []
     for ln in lines:
         starts.append(t)
-        t += ln["duration"] + (d["break"] if ln.get("break_after") else d["gap"])
+        t += ln["duration"] / tempo + (d["break"] if ln.get("break_after") else d["gap"])
     end_time = t + d["tail"]
     starts.append(end_time)  # sentinel
 
@@ -110,7 +112,7 @@ def main():
         src = clean / ln["file"] if (clean / ln["file"]).exists() else vdir / "voice" / ln["file"]
         vin += ["-i", str(src)]
         ms = int(starts[i] * 1000)
-        vf.append(f"[{i}:a]aresample=48000,adelay={ms}|{ms}[v{i}]")
+        vf.append(f"[{i}:a]aresample=48000,atempo={tempo},adelay={ms}|{ms}[v{i}]")
     vf.append("".join(f"[v{i}]" for i in range(len(lines))) +
               f"amix=inputs={len(lines)}:normalize=0,apad=whole_dur={end_time:.3f},"
               "highpass=f=75,equalizer=f=250:t=q:w=1.4:g=-3,equalizer=f=4000:t=q:w=1:g=2,"
@@ -212,29 +214,51 @@ def main():
                   f"afade=t=out:st={max(0, dur - out_fade):.3f}:d={out_fade},volume=0.30,adelay={ms}|{ms}[m{n}]")
         labels.append(f"[m{n}]")
         n += 1
-    # Continuous a cappella bed under the whole video (very low), dipped out under the epic cues.
-    bed_cfg = plan.get("bed")
-    if bed_cfg:
-        piece = float(subprocess.check_output(["ffprobe", "-v", "error", "-show_entries", "format=duration",
-                                               "-of", "csv=p=0", str(ROOT / bed_cfg["file"])]))
-        xf = 3.0  # seconds of crossfade between copies, so the loop has no seam
-        copies = max(2, int(end_time // (piece - xf)) + 2)
-        # Build the long seamless bed as its own file from separate inputs (asplit + acrossfade stalls).
-        loop = build / "bed-loop.wav"
-        bin_ = sum((["-i", str(ROOT / bed_cfg["file"])] for _ in range(copies)), [])
-        chain, prev = [], "[0:a]"
-        for k in range(1, copies):
-            chain.append(f"{prev}[{k}:a]acrossfade=d={xf}[x{k}]")
-            prev = f"[x{k}]"
-        sh(["ffmpeg", "-loglevel", "error", "-y", *bin_, "-filter_complex", ";".join(chain), "-map", prev,
-            "-ar", "48000", "-ac", "2", str(loop)])
-        ins += ["-i", str(loop)]
+    # A cappella bed under the whole video (very low), dipped out under the epic cues.
+    # "beds": one mood per section [{"files": [...], "lines": [from, to]}], blended into each other;
+    # or a single "bed": {"file": ...} for the whole video.
+    beds = plan.get("beds")
+    if not beds and plan.get("bed"):
+        beds = [{"files": [plan["bed"]["file"]], "lines": [1, len(lines)], "volume": plan["bed"].get("volume", 0.12)}]
+    bed_cfg = bool(beds)
+    if beds:
+        xf, blend = 3.0, 2.5   # loop crossfade inside a mood; blend between moods
         dips = "+".join(f"between(t,{line_start(c['lines'][0]) - 0.3:.2f},{line_start(c['lines'][1] + 1):.2f})"
                         for c in plan["music"]) or "0"
-        fx.append(f"[{n}:a]atrim=0:{end_time:.3f},asetpts=PTS-STARTPTS,"
-                  f"afade=t=in:d=2,afade=t=out:st={end_time - 3:.3f}:d=3,volume={bed_cfg.get('volume', 0.12)},"
-                  f"volume=0.15:enable='{dips}'[bed0]")
-        n += 1  # not ducked: it's already quiet, and should stay steady under the voice
+        seg_labels = []
+        for si, bd in enumerate(beds):
+            a0 = 0.0 if si == 0 else line_start(bd["lines"][0]) - blend / 2
+            a1 = end_time if si == len(beds) - 1 else line_start(bd["lines"][1] + 1) + blend / 2
+            dur = a1 - a0
+            files = [str(ROOT / f) for f in bd["files"]]
+            lens = [float(subprocess.check_output(["ffprobe", "-v", "error", "-show_entries", "format=duration",
+                                                   "-of", "csv=p=0", f])) for f in files]
+            seq, total = [], 0.0
+            while total < dur + xf:
+                k = len(seq) % len(files)
+                seq.append(files[k])
+                total += lens[k] - xf
+            loop = build / f"bed-{si}.wav"
+            bin_ = sum((["-i", f] for f in seq), [])
+            if len(seq) == 1:
+                sh(["ffmpeg", "-loglevel", "error", "-y", *bin_, "-ar", "48000", "-ac", "2", str(loop)])
+            else:
+                chain, prev = [], "[0:a]"
+                for k in range(1, len(seq)):
+                    chain.append(f"{prev}[{k}:a]acrossfade=d={xf}[x{k}]")
+                    prev = f"[x{k}]"
+                sh(["ffmpeg", "-loglevel", "error", "-y", *bin_, "-filter_complex", ";".join(chain), "-map", prev,
+                    "-ar", "48000", "-ac", "2", str(loop)])
+            # Even out loudness between moods, then place the segment on the timeline.
+            ins += ["-i", str(loop)]
+            ms = int(a0 * 1000)
+            fx.append(f"[{n}:a]atrim=0:{dur:.3f},asetpts=PTS-STARTPTS,loudnorm=I=-20:TP=-3,"
+                      f"afade=t=in:d={2 if si == 0 else blend},afade=t=out:st={max(0, dur - (3 if si == len(beds) - 1 else blend)):.3f}:d={3 if si == len(beds) - 1 else blend},"
+                      f"volume={bd.get('volume', 0.12)},adelay={ms}|{ms}[bs{si}]")
+            seg_labels.append(f"[bs{si}]")
+            n += 1
+        fx.append("".join(seg_labels) + f"amix=inputs={len(seg_labels)}:normalize=0,"
+                  f"atrim=0:{end_time:.3f},volume=0.15:enable='{dips}'[bed0]")
     for line, frac, name, vol in plan["sfx"]:
         a, b = line_start(line), line_start(line + 1)
         ms = int((a + (b - a) * frac) * 1000)
