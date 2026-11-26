@@ -3,511 +3,511 @@
   "text": "If you're chasing someone who doesn't want you, you're losing more than time.",
   "break_after": false,
   "file": "line_001.wav",
-  "duration": 3.241,
+  "duration": 3.8,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "This morning I'm making breakfast. And boom. Flashbacks. Five months on dating apps.",
   "break_after": false,
   "file": "line_002.wav",
-  "duration": 4.862,
+  "duration": 7.04,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "Five months I'm never getting back. Bro. Who was that guy?",
   "break_after": true,
   "file": "line_003.wav",
-  "duration": 2.975,
+  "duration": 5.574,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "Here's the game nobody explains. Chase or get chased. That's it.",
   "break_after": false,
   "file": "line_004.wav",
-  "duration": 4.125,
+  "duration": 5.08,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "You chase someone who doesn't want you. Someone chases you, and you don't want them. Everybody loses.",
   "break_after": false,
   "file": "line_005.wav",
-  "duration": 5.251,
+  "duration": 6.32,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "And everybody's trying to prove something. Prove what? Nobody knows.",
   "break_after": false,
   "file": "line_006.wav",
-  "duration": 3.34,
+  "duration": 5.68,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "\"Hey, I'm worth looking at.\" Just [BLEEP] off. I don't even care if you exist.",
   "break_after": false,
   "file": "line_007.wav",
-  "duration": 5.134,
+  "duration": 6.12,
   "bleeps": [
    [
-    2.46,
+    2.6332,
     0.32
    ]
   ],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "That should've been my mentality. Was it? No. Of course not. Stupid idiot.",
   "break_after": true,
   "file": "line_008.wav",
-  "duration": 4.702,
+  "duration": 9.4,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "I didn't even want that person. Not even a little.",
   "break_after": false,
   "file": "line_009.wav",
-  "duration": 2.463,
+  "duration": 4.4,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "One minute. That's all it would've taken. One minute of using my brain.",
   "break_after": false,
   "file": "line_010.wav",
-  "duration": 4.207,
+  "duration": 5.56,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "But they pull away, and suddenly I'm the one trying. Did I do something? Can I prove I'm better? Am I good enough?",
   "break_after": false,
   "file": "line_011.wav",
-  "duration": 6.57,
+  "duration": 9.4,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "Good enough for what? I didn't even like you.",
   "break_after": true,
   "file": "line_012.wav",
-  "duration": 2.532,
+  "duration": 2.88,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "It's not them you want. It's the attention. You want to be wanted. That's the trap.",
   "break_after": false,
   "file": "line_013.wav",
-  "duration": 6.389,
+  "duration": 7.88,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "They act high value, so you assume they are. They might not be. Acting is free.",
   "break_after": false,
   "file": "line_014.wav",
-  "duration": 5.048,
+  "duration": 6.36,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "And the more desperate you get, the further they go. Like a cat. Chase the cat, the cat leaves.",
   "break_after": false,
   "file": "line_015.wav",
-  "duration": 4.877,
+  "duration": 6.4,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "It's Gojo's Infinity, and daddy Mahoraga isn't on your side. You get closer and closer. You never touch it.",
   "break_after": true,
   "file": "line_016.wav",
-  "duration": 6.305,
+  "duration": 8.563,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "The funny part? I saw it happening. In real time. I looked at it, said \"interesting,\" and kept going.",
   "break_after": false,
   "file": "line_017.wav",
-  "duration": 6.44,
+  "duration": 7.96,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "It's like a drug.",
   "break_after": false,
   "file": "line_018.wav",
-  "duration": 0.708,
+  "duration": 1.44,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "Meanwhile, my actual life is just sitting there. Hello? Remember me?",
   "break_after": true,
   "file": "line_019.wav",
-  "duration": 4.071,
+  "duration": 4.2,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "I was obsessed with training. Obsessed. One word in my head. Perfection.",
   "break_after": false,
   "file": "line_020.wav",
-  "duration": 4.358,
+  "duration": 7.44,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "I had goals so big I couldn't say them out loud. People would think I'm crazy.",
   "break_after": false,
   "file": "line_021.wav",
-  "duration": 3.796,
+  "duration": 5.88,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "And what happened to them? Forgot them. Completely. For a situation on my phone.",
   "break_after": false,
   "file": "line_022.wav",
-  "duration": 4.55,
+  "duration": 6.048,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "Now I'm training sad, thinking about one person, while making another person sad.",
   "break_after": false,
   "file": "line_023.wav",
-  "duration": 4.396,
+  "duration": 4.56,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "How do you even manage that? Talent, honestly.",
   "break_after": true,
   "file": "line_024.wav",
-  "duration": 3.249,
+  "duration": 5.76,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "So how did I fix it? Genius over here jumped into a new situationship.",
   "break_after": false,
   "file": "line_025.wav",
-  "duration": 3.792,
+  "duration": 5.72,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "Beautiful. Amazing. Stupid. Everyone could see it except the guy doing it. Me.",
   "break_after": true,
   "file": "line_026.wav",
-  "duration": 5.04,
+  "duration": 6.96,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "Then I got my wake-up call.",
   "break_after": false,
   "file": "line_027.wav",
-  "duration": 1.277,
+  "duration": 2.04,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "I'd been chased before. Everybody has. But not like this.",
   "break_after": false,
   "file": "line_028.wav",
-  "duration": 2.777,
+  "duration": 5.04,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "We'd known each other less than a week, and I was already her whole life.",
   "break_after": false,
   "file": "line_029.wav",
-  "duration": 3.327,
+  "duration": 4.88,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "I don't answer for twenty minutes. I open my phone. Twenty messages.",
   "break_after": false,
   "file": "line_030.wav",
-  "duration": 3.998,
+  "duration": 5.0,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "Do you wanna go? Do you still wanna talk to me? Do I even matter to you?",
   "break_after": false,
   "file": "line_031.wav",
-  "duration": 3.83,
+  "duration": 5.2,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "It's been a week. One week. And your whole life already revolves around me?",
   "break_after": false,
   "file": "line_032.wav",
-  "duration": 4.276,
+  "duration": 5.44,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "And then it hit me. Wait. Do I act like this?",
   "break_after": false,
   "file": "line_033.wav",
-  "duration": 2.848,
+  "duration": 4.44,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "Not that bad. Maybe five percent. But even one percent, I'm not accepting that from myself.",
   "break_after": true,
   "file": "line_034.wav",
-  "duration": 5.288,
+  "duration": 6.24,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "Hold on. My neighbor is staring at me through his window. What the heck. Anyway.",
   "break_after": true,
   "file": "line_035.wav",
-  "duration": 4.713,
+  "duration": 6.88,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "I'm not saying I'm better than her. Everybody is better than this. Even her.",
   "break_after": false,
   "file": "line_036.wav",
-  "duration": 4.501,
+  "duration": 5.8,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "We're all just fooled. Movies and social media sell us the drama. We think we want it. We don't.",
   "break_after": false,
   "file": "line_037.wav",
-  "duration": 5.893,
+  "duration": 7.6,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "And these apps? Use your head. They don't want you to leave. They want your money. You stay stuck, they stay happy.",
   "break_after": true,
   "file": "line_038.wav",
-  "duration": 6.881,
+  "duration": 8.48,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "So leave. And don't tell me you're \"resisting.\"",
   "break_after": false,
   "file": "line_039.wav",
-  "duration": 2.117,
+  "duration": 2.96,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "If a knife is cutting you, you don't resist the knife. You stay away from it. That's it. Let it heal.",
   "break_after": false,
   "file": "line_040.wav",
-  "duration": 5.386,
+  "duration": 6.12,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "But we keep going back. Maybe this time the knife is different. It's not.",
   "break_after": true,
   "file": "line_041.wav",
-  "duration": 4.473,
+  "duration": 5.12,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "Put the phone down. Don't eat slop.",
   "break_after": false,
   "file": "line_042.wav",
-  "duration": 1.914,
+  "duration": 2.48,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "And if I catch you at McDonald's, I hope God strikes you with thunder. Do you know how many ingredients are in that thing?",
   "break_after": false,
   "file": "line_043.wav",
-  "duration": 5.843,
+  "duration": 6.96,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "Go outside. Look around. Go back to the old ways.",
   "break_after": false,
   "file": "line_044.wav",
-  "duration": 3.152,
+  "duration": 4.24,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "Yeah, it's not that easy anymore. Doesn't matter. Find a way.",
   "break_after": true,
   "file": "line_045.wav",
-  "duration": 4.271,
+  "duration": 4.04,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "Remember being a kid? Everything was bright. You enjoyed everything. That's your natural state.",
   "break_after": false,
   "file": "line_046.wav",
-  "duration": 5.344,
+  "duration": 7.68,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "You can go back. Give it a month. Maybe two.",
   "break_after": false,
   "file": "line_047.wav",
-  "duration": 2.39,
+  "duration": 4.64,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "\"My life is ruined.\" Relax. Remember that high school relationship? The one that was forever? Yeah.",
   "break_after": false,
   "file": "line_048.wav",
-  "duration": 6.665,
+  "duration": 7.96,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "You survived. And if you're in high school right now, you will too.",
   "break_after": true,
   "file": "line_049.wav",
-  "duration": 2.767,
+  "duration": 3.92,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "You can be reborn. For real. People change their whole lives. You're not stuck being the same person forever.",
   "break_after": false,
   "file": "line_050.wav",
-  "duration": 4.864,
+  "duration": 10.12,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "You're human. Humans make mistakes. It wouldn't be fair if you only got one shot.",
   "break_after": false,
   "file": "line_051.wav",
-  "duration": 4.46,
+  "duration": 5.68,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "I believe that's from God. Whatever you believe, that's up to you.",
   "break_after": false,
   "file": "line_052.wav",
-  "duration": 3.374,
+  "duration": 4.16,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "I'm not saying don't chase love. Chase a healthy one. A loving wife. A loving husband. Hardworking. Respectful. Grinding for each other. Kids.",
   "break_after": false,
   "file": "line_053.wav",
-  "duration": 8.868,
+  "duration": 12.16,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "Not whatever that was on the app.",
   "break_after": true,
   "file": "line_054.wav",
-  "duration": 1.569,
+  "duration": 2.72,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "Honestly, this video was never supposed to be about dating apps. [BLEEP] the dating apps.",
   "break_after": false,
   "file": "line_055.wav",
-  "duration": 4.349,
+  "duration": 4.72,
   "bleeps": [
    [
-    3.201,
+    3.4693,
     0.32
    ]
   ],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "We sit there going, this piece of crap looks good. No, this piece of crap is bad. It's all crap.",
   "break_after": true,
   "file": "line_056.wav",
-  "duration": 5.878,
+  "duration": 5.92,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "I'm talking about being alive. We say \"get a life\" like it means \"get a job.\"",
   "break_after": false,
   "file": "line_057.wav",
-  "duration": 4.106,
+  "duration": 5.52,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "People go crazy over gold. What the [BLEEP] is gold? It's a metal.",
   "break_after": false,
   "file": "line_058.wav",
-  "duration": 4.137,
+  "duration": 5.52,
   "bleeps": [
    [
-    2.26,
+    3.1028,
     0.32
    ]
   ],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "But being alive? Memories. Feelings. A character you get to build. And that time isn't coming back.",
   "break_after": false,
   "file": "line_059.wav",
-  "duration": 6.413,
+  "duration": 9.72,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "You could be doing anything with it. And you're checking if somebody texted back.",
   "break_after": false,
   "file": "line_060.wav",
-  "duration": 3.916,
+  "duration": 4.6,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "Don't waste it, man. Enjoy it. So one day you look back and ask, who was that guy? And you're proud of him.",
   "break_after": false,
   "file": "line_061.wav",
-  "duration": 6.5,
+  "duration": 8.4,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  },
  {
   "text": "Don't do anything illegal today. Love you all equally. Bye.",
   "break_after": false,
   "file": "line_062.wav",
-  "duration": 4.202,
+  "duration": 3.92,
   "bleeps": [],
-  "voice": "qwen3:E"
+  "voice": "qwen3:E:directed+vc:E"
  }
 ]
