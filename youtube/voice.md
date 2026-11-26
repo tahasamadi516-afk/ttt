@@ -43,22 +43,27 @@ When writing, name which of these the piece (or each short) is aimed at.
   "Don't fail us. Do your part."
 - Faith comes up naturally sometimes (prayer, God knows what's good for you).
 
-## Words they never use
+## Words they never use (inferred, not confirmed)
 - Corporate/creator filler: "in today's video", "smash that like button", "without further
   ado", "let's dive in", "game-changer", "unlock your potential", "journey".
 - Soft hedging that kills the punch: "perhaps", "it could be argued", "some might say".
 - Therapy-speak cushioning: "valid", "holding space", "toxic" as a catch-all.
-(Inferred from the writing; creator to confirm.)
 
 ## Words they do use
 deserve, work for it, get up, do it, step by step, don't overcomplicate it, bro, honestly,
 not gonna lie, trust me, you know what I'm saying, the struggle, act like it.
 
 ## Claims they won't make
-- TODO: creator to fill in.
+- None given. Creator writes the scripts and owns the claims. Never add facts, stats or
+  advice they didn't say.
 
 ## Format
 - One long-form video (~9 min) per idea, cut into ~9 one-minute shorts.
 - Posted to YouTube and Instagram (long + shorts).
 - Each short has to stand on its own: one idea, one landing.
-- TODO: on camera or faceless? Language?
+- Faceless (voiceover + visuals). English.
+
+## Rule for scripts
+The creator brings the script ready. Keep their words and rhythm as written. Don't polish,
+soften or "improve" them. Edits only for cuts, shorts, titles, descriptions and timing, and
+those must sound like the creator too (see the book and how they talk above).
