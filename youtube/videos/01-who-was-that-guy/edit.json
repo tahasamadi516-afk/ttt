@@ -1188,8 +1188,83 @@
    0.8
   ]
  ],
- "bed": {
-  "file": "youtube/assets/music/bed-acapella.mp3",
-  "volume": 0.12
- }
+ "beds": [
+  {
+   "files": [
+    "youtube/assets/music/beds/playful_0.mp3",
+    "youtube/assets/music/beds/playful_1.mp3"
+   ],
+   "lines": [
+    1,
+    12
+   ],
+   "volume": 0.12
+  },
+  {
+   "files": [
+    "youtube/assets/music/beds/mysterious_0.mp3",
+    "youtube/assets/music/beds/mysterious_1.mp3"
+   ],
+   "lines": [
+    13,
+    19
+   ],
+   "volume": 0.12
+  },
+  {
+   "files": [
+    "youtube/assets/music/beds/bittersweet_0.mp3",
+    "youtube/assets/music/beds/bittersweet_1.mp3"
+   ],
+   "lines": [
+    20,
+    26
+   ],
+   "volume": 0.12
+  },
+  {
+   "files": [
+    "youtube/assets/music/beds/tense_0.mp3",
+    "youtube/assets/music/beds/tense_1.mp3"
+   ],
+   "lines": [
+    27,
+    35
+   ],
+   "volume": 0.12
+  },
+  {
+   "files": [
+    "youtube/assets/music/beds/confident_0.mp3",
+    "youtube/assets/music/beds/confident_1.mp3"
+   ],
+   "lines": [
+    36,
+    45
+   ],
+   "volume": 0.12
+  },
+  {
+   "files": [
+    "youtube/assets/music/beds/hopeful_0.mp3",
+    "youtube/assets/music/beds/hopeful_1.mp3"
+   ],
+   "lines": [
+    46,
+    56
+   ],
+   "volume": 0.12
+  },
+  {
+   "files": [
+    "youtube/assets/music/beds/alive_0.mp3",
+    "youtube/assets/music/beds/alive_1.mp3"
+   ],
+   "lines": [
+    57,
+    62
+   ],
+   "volume": 0.12
+  }
+ ]
 }
