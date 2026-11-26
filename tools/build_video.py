@@ -112,7 +112,11 @@ def main():
         src = clean / ln["file"] if (clean / ln["file"]).exists() else vdir / "voice" / ln["file"]
         vin += ["-i", str(src)]
         ms = int(starts[i] * 1000)
-        vf.append(f"[{i}:a]aresample=48000,atempo={tempo},adelay={ms}|{ms}[v{i}]")
+        # Each line is polished and loudness-matched on its own first (exactly like the voice tests),
+        # so no line ends up quieter, louder or duller than the others.
+        vf.append(f"[{i}:a]aresample=48000,atempo={tempo},highpass=f=75,"
+                  f"acompressor=threshold=-20dB:ratio=2.5:attack=10:release=150:makeup=2,"
+                  f"loudnorm=I=-17:TP=-2:LRA=7,aresample=48000,adelay={ms}|{ms}[v{i}]")
     vf.append("".join(f"[v{i}]" for i in range(len(lines))) +
               f"amix=inputs={len(lines)}:normalize=0,apad=whole_dur={end_time:.3f},"
               "highpass=f=75,equalizer=f=250:t=q:w=1.4:g=-3,equalizer=f=4000:t=q:w=1:g=2,"
@@ -288,7 +292,7 @@ def main():
                                  "curves=all='0/0.035 0.5/0.51 1/0.95'")
     sh(["ffmpeg", "-loglevel", "error", "-y", "-i", str(build / "video.mp4"), "-i", str(build / "mix.wav"),
         "-vf", grade, "-c:v", "libx264", "-preset", "slow", "-crf", "17", "-pix_fmt", "yuv420p",
-        "-c:a", "aac", "-b:a", "192k", "-shortest", "-movflags", "+faststart", str(final)])
+        "-c:a", "aac", "-b:a", "320k", "-shortest", "-movflags", "+faststart", str(final)])
     print("wrote", final.relative_to(ROOT))
 
 
