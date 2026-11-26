@@ -35,3 +35,9 @@ final MP4 (ffmpeg). Each video lives in `projects/<slug>/`.
 `/motion-design` (in `.claude/skills/motion-design/`) turns one image into a paper-cut
 stop-motion clip: 3 prompts (paper-cut image, 9-panel sheet, animation). Prompts only.
 Style anchor image: `.claude/skills/motion-design/paper-cut-style.jpg`.
+
+## 3D motion graphics skills (installed from the creator's links)
+- `lemo-opuscar` (github.com/lemomo-ai/lemo-opuscar): code-rendered films in library styles. First use clones its library to `~/lemo-opuscar` and needs Node 20+, ffmpeg 7+, Python 3.11+.
+- `earshot` + `real-sound` (github.com/Leonxlnx/earshot): make and judge sound effects. Needs the tool: `pip install "earshot @ git+https://github.com/Leonxlnx/earshot"` (not in the setup script yet).
+- Blender skills pack (github.com/arjun988/blender-skills): 94 skills in `.claude/skills/`. Needs Blender + the BlenderMCP addon on the user's own computer to actually run.
+- Network: `go.nicksaraev.com` was allowed on the Default environment so the links could be opened.
