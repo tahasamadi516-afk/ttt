@@ -11,6 +11,8 @@
     push:    0.06       how much the camera zooms in over the clip
     captions: [{"text": "Who was that guy?", "at": 0.5, "dur": 2}]
     tint:    "none" | "cold" | "warm"   color grade
+    flashes: [1.2]      times of a white lightning flash + shake
+    zoom:    0          extra punch-in at the start (e.g. 0.15 for a dramatic snap zoom)
 -->
 <html><head><meta charset="utf-8">
 <script src="lib.js"></script>
@@ -29,7 +31,7 @@
 </style></head>
 <body>
 <div id="cam"><div id="shadow"></div></div>
-<div id="tint"></div><div id="vig"></div><div id="cap"></div><canvas id="grain"></canvas>
+<div id="tint"></div><div id="flash" style="position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none"></div><div id="vig"></div><div id="cap"></div><canvas id="grain"></canvas>
 <script>
   const cam = document.getElementById('cam');
   const bgSrc = param('bg', null);
@@ -45,10 +47,17 @@
   document.getElementById('tint').style.background = tint;
   const shadow = document.getElementById('shadow'), capEl = document.getElementById('cap');
 
+  const flashes = param('flashes', []), zoom = param('zoom', 0);
+  const flashEl = document.getElementById('flash');
   window.sceneReady = () => imagesReady();
   window.renderFrame = (t) => {
     const W = innerWidth, H = innerHeight;
-    cam.style.transform = `scale(${1 + push * ease.inOut(clamp(t / 8))})`;
+    let fl = 0;
+    flashes.forEach((f) => { if (t >= f) fl = Math.max(fl, 1 - prog(t, f, 0.35)); });
+    flashEl.style.opacity = fl * 0.9;
+    const [sx, sy] = shake(t, 18 * fl);
+    const snap = zoom * (1 - ease.out(prog(t, 0, 0.35)));
+    cam.style.transform = `translate(${sx}px, ${sy}px) scale(${1 + snap + push * ease.inOut(clamp(t / 8))})`;
     // which pose is active, and crossfade over 0.12s
     let active = 0;
     poses.forEach((p, i) => { if (t >= p.at) active = i; });

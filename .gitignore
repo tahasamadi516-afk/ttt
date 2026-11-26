@@ -1,3 +1,5 @@
 youtube/assets/raw/
 out/
 node_modules/
+youtube/videos/*/build/
+youtube/videos/*/build-preview/
