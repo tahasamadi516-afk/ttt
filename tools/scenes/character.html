@@ -1,0 +1,70 @@
+<!doctype html>
+<!--
+  The character on a background: idle breathing, slow camera push, pose swaps on cue,
+  optional caption. Paths are relative to this file (tools/scenes/), e.g.
+  "../../youtube/assets/character/talking.png".
+  params:
+    bg:      path to a background image (omit for the plain charcoal backdrop)
+    poses:   [{"src": "...png", "at": 0}, {"src": "...png", "at": 2.5}]  cutouts and when each starts
+    x:       0.5        horizontal center of the character, 0..1 of the frame
+    height:  0.92       character height as a share of the frame
+    push:    0.06       how much the camera zooms in over the clip
+    captions: [{"text": "Who was that guy?", "at": 0.5, "dur": 2}]
+    tint:    "none" | "cold" | "warm"   color grade
+-->
+<html><head><meta charset="utf-8">
+<script src="lib.js"></script>
+<style>
+  html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; }
+  #cam { position: absolute; inset: 0; transform-origin: 50% 45%; }
+  #bg { position: absolute; inset: -2%; width: 104%; height: 104%; object-fit: cover; filter: brightness(.82) saturate(.9); }
+  .pose { position: absolute; bottom: 0; transform-origin: 50% 100%; opacity: 0; }
+  #shadow { position: absolute; bottom: -40px; width: 600px; height: 90px; border-radius: 50%;
+            background: radial-gradient(rgba(0,0,0,.55), transparent 70%); transform: translateX(-50%); }
+  #tint { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: soft-light; }
+  #vig { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 40%, transparent 50%, rgba(0,0,0,.6) 100%); }
+  #cap { position: absolute; left: 0; right: 0; bottom: 70px; text-align: center; font: 900 64px 'Inter Display', sans-serif;
+         color: #f2eae2; text-shadow: 0 4px 0 #000, 0 0 30px rgba(0,0,0,.8); padding: 0 120px; }
+  #grain { position: absolute; inset: 0; width: 100%; height: 100%; mix-blend-mode: overlay; }
+</style></head>
+<body>
+<div id="cam"><div id="shadow"></div></div>
+<div id="tint"></div><div id="vig"></div><div id="cap"></div><canvas id="grain"></canvas>
+<script>
+  const cam = document.getElementById('cam');
+  const bgSrc = param('bg', null);
+  document.body.style.background = BRAND.bg;
+  if (bgSrc) { const b = document.createElement('img'); b.id = 'bg'; b.src = bgSrc; cam.prepend(b); }
+  const poses = param('poses', []).map((p) => {
+    const im = document.createElement('img'); im.className = 'pose'; im.src = p.src; cam.appendChild(im);
+    return { el: im, at: p.at || 0 };
+  });
+  const xC = param('x', 0.5), hShare = param('height', 0.92), push = param('push', 0.06);
+  const caps = param('captions', []);
+  const tint = { cold: 'rgba(60,120,255,.35)', warm: 'rgba(255,140,60,.3)', none: 'transparent' }[param('tint', 'none')];
+  document.getElementById('tint').style.background = tint;
+  const shadow = document.getElementById('shadow'), capEl = document.getElementById('cap');
+
+  window.sceneReady = () => imagesReady();
+  window.renderFrame = (t) => {
+    const W = innerWidth, H = innerHeight;
+    cam.style.transform = `scale(${1 + push * ease.inOut(clamp(t / 8))})`;
+    // which pose is active, and crossfade over 0.12s
+    let active = 0;
+    poses.forEach((p, i) => { if (t >= p.at) active = i; });
+    poses.forEach((p, i) => {
+      const h = H * hShare, w = h * (p.el.naturalWidth / p.el.naturalHeight || 0.75);
+      const breathe = 1 + Math.sin(t * 2.1) * 0.006;
+      const swap = i === active ? ease.out(prog(t, p.at, 0.12)) : 0;
+      const pop = i === active ? (1 - prog(t, p.at, 0.25)) * 0.03 : 0;
+      Object.assign(p.el.style, { height: h + 'px', left: (W * xC - w / 2) + 'px', opacity: swap,
+        transform: `scale(${breathe + pop}, ${breathe * (1 + Math.sin(t * 2.1) * 0.003) + pop})` });
+    });
+    shadow.style.left = W * xC + 'px';
+    const c = caps.find((c) => t >= c.at && t < c.at + (c.dur || 2));
+    capEl.textContent = c ? c.text : '';
+    if (c) { const k = ease.back(prog(t, c.at, 0.2)); capEl.style.transform = `scale(${lerp(0.85, 1, k)})`; capEl.style.opacity = prog(t, c.at, 0.1); }
+    drawGrain(t, 0.05);
+  };
+</script>
+</body></html>

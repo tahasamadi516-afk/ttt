@@ -1,0 +1,62 @@
+<!doctype html>
+<!--
+  Kinetic text: words slam in one at a time.
+  params:
+    lines:    ["WHO WAS", "THAT GUY?"]   lines of text
+    accent:   ["GUY?"]                    words drawn in the accent color
+    start:    0.3                          seconds before the first word
+    gap:      0.18                         seconds between words
+    shake:    true                         camera shake on each hit
+    bg:       "dark" | "transparent"
+    size:     150                          font size in px
+-->
+<html><head><meta charset="utf-8">
+<script src="lib.js"></script>
+<style>
+  html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; }
+  body { display: flex; align-items: center; justify-content: center; }
+  #stage { text-align: center; will-change: transform; }
+  .line { display: block; line-height: 1.02; }
+  .w { display: inline-block; margin: 0 0.12em; opacity: 0; transform-origin: 50% 60%; }
+  #vig { position: fixed; inset: 0; pointer-events: none;
+         background: radial-gradient(ellipse at center, transparent 45%, rgba(0,0,0,.55) 100%); }
+  #grain { position: fixed; inset: 0; width: 100%; height: 100%; mix-blend-mode: overlay; pointer-events: none; }
+</style></head>
+<body>
+<div id="stage"></div><div id="vig"></div><canvas id="grain"></canvas>
+<script>
+  const lines = param('lines', ['WHO WAS', 'THAT GUY?']);
+  const accent = new Set(param('accent', ['GUY?']));
+  const start = param('start', 0.3), gap = param('gap', 0.18), size = param('size', 150);
+  const dark = param('bg', 'dark') !== 'transparent';
+  document.body.style.background = dark ? BRAND.bg : 'transparent';
+  if (!dark) { document.getElementById('vig').remove(); document.getElementById('grain').remove(); }
+  const stage = document.getElementById('stage');
+  Object.assign(stage.style, { fontFamily: BRAND.font, fontWeight: 900, fontSize: size + 'px',
+    color: BRAND.text, letterSpacing: '-0.01em', textShadow: '0 8px 30px rgba(0,0,0,.5)' });
+  const words = [];
+  lines.forEach((ln) => {
+    const l = document.createElement('span'); l.className = 'line';
+    ln.split(' ').forEach((w) => {
+      const s = document.createElement('span'); s.className = 'w'; s.textContent = w;
+      if (accent.has(w)) s.style.color = BRAND.accent;
+      l.appendChild(s); words.push(s);
+    });
+    stage.appendChild(l);
+  });
+  window.renderFrame = (t) => {
+    let hit = 0;
+    words.forEach((el, i) => {
+      const k = prog(t, start + i * gap, 0.22);
+      el.style.opacity = k > 0 ? 1 : 0;
+      const sc = lerp(1.9, 1, ease.back(k));
+      el.style.transform = `scale(${sc}) rotate(${(1 - ease.out(k)) * (rand(i) - 0.5) * 10}deg)`;
+      if (k > 0 && k < 1) hit = Math.max(hit, 1 - k);
+    });
+    const drift = 1 + t * 0.012;
+    const [sx, sy] = param('shake', true) ? shake(t, 14 * hit) : [0, 0];
+    stage.style.transform = `translate(${sx}px, ${sy}px) scale(${drift})`;
+    if (dark) drawGrain(t);
+  };
+</script>
+</body></html>

@@ -1,0 +1,74 @@
+<!doctype html>
+<!--
+  Phone with incoming messages piling up, with an unread badge counting up.
+  params:
+    contact:  "her"                     name at the top of the chat
+    messages: ["hey", "??", ...]        messages, shown in order
+    start:    0.4                        seconds before the first message
+    gap:      0.45                       seconds between messages (speeds up when accelerate)
+    accelerate: true                     each message comes a little faster
+    counter:  true                       big "20 MESSAGES" counter next to the phone
+    side:     "center" | "right" | "left"  where the phone sits (leave room for the character)
+-->
+<html><head><meta charset="utf-8">
+<script src="lib.js"></script>
+<style>
+  html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; }
+  #phone { position: absolute; top: 50%; width: 520px; height: 960px; border-radius: 64px;
+           background: #0d0d10; box-shadow: 0 0 0 14px #1c1b1f, 0 40px 120px rgba(0,0,0,.7), 0 0 160px rgba(90,167,255,.18); }
+  #screen { position: absolute; inset: 22px; border-radius: 46px; overflow: hidden;
+            background: linear-gradient(#17171c, #101014); }
+  #head { position: absolute; top: 0; left: 0; right: 0; height: 128px; display: flex; align-items: flex-end;
+          justify-content: center; padding-bottom: 18px; box-sizing: border-box;
+          border-bottom: 1px solid rgba(255,255,255,.07); background: #14141a; z-index: 2;
+          font: 600 28px 'Inter', sans-serif; color: #e8e8ee; }
+  #feed { position: absolute; left: 0; right: 0; bottom: 30px; padding: 0 26px; display: flex;
+          flex-direction: column; align-items: flex-start; gap: 12px; }
+  .b { max-width: 78%; padding: 16px 22px; border-radius: 28px 28px 28px 8px; background: #2a2a31;
+       color: #f1f1f5; font: 500 27px/1.25 'Inter', sans-serif; transform-origin: 0 100%; }
+  #badge { position: absolute; top: 50%; font: 900 170px/0.9 'Inter Display', sans-serif; text-align: left; }
+  #badge small { display: block; font-size: 54px; letter-spacing: .04em; color: #9a918b; margin-top: 12px; }
+  #grain { position: fixed; inset: 0; width: 100%; height: 100%; mix-blend-mode: overlay; }
+</style></head>
+<body>
+<div id="phone"><div id="screen"><div id="head"></div><div id="feed"></div></div></div>
+<div id="badge"></div>
+<canvas id="grain"></canvas>
+<script>
+  document.body.style.background = `radial-gradient(ellipse at 50% 45%, #2e2c31, ${BRAND.bgDeep} 75%)`;
+  const msgs = param('messages', ['hey', 'you there?', 'hello??', 'do you wanna go?', '??',
+    'do you still wanna talk to me?', 'ok', 'wow', 'answer me', 'do I even matter to you?',
+    'seriously', '???', 'hello', 'you could at least reply', 'ok bye', 'wait', 'are you mad?',
+    'I\'m sorry', 'please', 'call me']);
+  const start = param('start', 0.4), gap0 = param('gap', 0.45), accel = param('accelerate', true);
+  const side = param('side', 'center'), counter = param('counter', true);
+  document.getElementById('head').textContent = param('contact', 'her');
+  const phone = document.getElementById('phone'), feed = document.getElementById('feed');
+  const badge = document.getElementById('badge');
+  const px = { center: counter ? 560 : 700, left: 180, right: 1220 }[side];
+  phone.style.left = px + 'px';
+  if (counter) { badge.style.left = (side === 'right' ? 220 : px + 640) + 'px'; badge.style.color = BRAND.accent; }
+  // arrival times
+  const times = []; let tt = start, g = gap0;
+  msgs.forEach(() => { times.push(tt); tt += g; if (accel) g = Math.max(0.12, g * 0.88); });
+  const els = msgs.map((m) => { const d = document.createElement('div'); d.className = 'b'; d.textContent = m; feed.appendChild(d); return d; });
+  window.renderFrame = (t) => {
+    let n = 0, lastHit = -1;
+    els.forEach((el, i) => {
+      const k = prog(t, times[i], 0.18);
+      el.style.display = t >= times[i] ? 'block' : 'none';
+      el.style.transform = `scale(${lerp(0.6, 1, ease.back(k))})`;
+      el.style.opacity = k;
+      if (t >= times[i]) { n++; lastHit = times[i]; }
+    });
+    const pop = lastHit >= 0 ? 1 - prog(t, lastHit, 0.15) : 0;
+    const enter = ease.out(prog(t, 0, 0.5));
+    phone.style.transform = `translateY(${-50 + (1 - enter) * 30}%) rotate(${-3 + pop * 1.2}deg) scale(${1 + pop * 0.015})`;
+    if (counter) {
+      badge.innerHTML = n ? `${n}<small>${n === 1 ? 'MESSAGE' : 'MESSAGES'}</small>` : '';
+      badge.style.transform = `translateY(-50%) scale(${1 + pop * 0.12})`;
+    }
+    drawGrain(t, 0.05);
+  };
+</script>
+</body></html>
