@@ -31,3 +31,12 @@ remove this reminder.
 into a cinematic 3D documentary blueprint: case file, scene table, image prompts,
 30-second video prompts, narration script and edit checklist. Prompts only; it never
 generates media. Run `/documentary` with no idea to see the process.
+
+## 3D animation skill
+`3d-animation` (in `.claude/skills/3d-animation/`) is a step-by-step studio for ~30s
+narrated 3D myth-busting shorts. Claude writes the script and all image/video prompts,
+the user generates the images and clips, then Claude voices it (edge-tts) and cuts the
+final MP4 (ffmpeg). Each video lives in `projects/<slug>/`.
+- Needs: ffmpeg (preinstalled), `pip install edge-tts` (not in the setup script yet).
+- edge-tts needs network access to `speech.platform.bing.com`, which this environment
+  currently blocks. Only the final voice/cut step needs it.
