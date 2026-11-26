@@ -1,130 +1,1076 @@
 {
-  "_doc": "Edit plan for video 01. Each entry covers narration lines [from..to] (numbers from narration.txt, comments/blank lines skipped). shots split that time by 'at' (0..1 fraction). kinds: char (cutout 'pose' on 'bg'), scene (full image, push-in), title (kinetic text), messages (phone pile-up). music: dark/warm beds by line range. sfx: [line, fraction, file]. Paths are relative to the repo root.",
-  "defaults": {"gap": 0.32, "break": 0.85, "tail": 1.5},
-  "bgs": {
-    "kitchen": "youtube/assets/backgrounds/bg-kitchen-morning.png",
-    "bedroom": "youtube/assets/backgrounds/bg-bedroom-night.png"
+ "_doc": "Edit plan for video 01. Each entry covers narration lines [from..to] (numbers from narration.txt, comments/blank lines skipped). shots split that time by 'at' (0..1 fraction). kinds: char (cutout 'pose' on 'bg'), scene (full image, push-in), title (kinetic text), messages (phone pile-up). music: dark/warm beds by line range. sfx: [line, fraction, file]. Paths are relative to the repo root.",
+ "defaults": {
+  "gap": 0.45,
+  "break": 1.1,
+  "tail": 2.0
+ },
+ "bgs": {
+  "kitchen": "youtube/assets/backgrounds/bg-kitchen-morning.png",
+  "bedroom": "youtube/assets/backgrounds/bg-bedroom-night.png"
+ },
+ "edits": [
+  {
+   "lines": [
+    1
+   ],
+   "shots": [
+    {
+     "kind": "char",
+     "bg": "kitchen",
+     "pose": "cooking",
+     "x": 0.33
+    },
+    {
+     "at": 0.78,
+     "kind": "char",
+     "bg": "kitchen",
+     "pose": "shocked",
+     "x": 0.33,
+     "zoom": 0.18
+    }
+   ]
   },
-  "edits": [
-    {"lines": [1], "shots": [
-      {"kind": "char", "bg": "kitchen", "pose": "cooking", "x": 0.33},
-      {"at": 0.78, "kind": "char", "bg": "kitchen", "pose": "shocked", "x": 0.33, "zoom": 0.18}]},
-    {"lines": [2], "shots": [{"kind": "scene", "img": "epic-scriptorium-phone", "push": 0.12}]},
-    {"lines": [3], "shots": [
-      {"kind": "char", "bg": "kitchen", "pose": "shrug", "x": 0.33},
-      {"at": 0.55, "kind": "title", "lines": ["WHO WAS", "THAT GUY?"], "accent": ["GUY?"]}]},
-    {"lines": [4], "shots": [{"kind": "title", "lines": ["CHASE", "OR GET CHASED"], "accent": ["CHASED"], "gap": 0.14}]},
-    {"lines": [5], "shots": [{"kind": "char", "bg": "kitchen", "pose": "talking", "x": 0.35}]},
-    {"lines": [6], "shots": [{"kind": "char", "bg": "kitchen", "pose": "shrug", "x": 0.6}]},
-    {"lines": [7], "shots": [
-      {"kind": "char", "bg": "kitchen", "pose": "smirk", "x": 0.4},
-      {"at": 0.4, "kind": "char", "bg": "kitchen", "pose": "deadpan", "x": 0.4, "zoom": 0.08}]},
-    {"lines": [8], "shots": [
-      {"kind": "char", "bg": "kitchen", "pose": "smirk", "x": 0.35},
-      {"at": 0.72, "kind": "char", "bg": "kitchen", "pose": "facepalm", "x": 0.35}]},
-    {"lines": [9], "shots": [{"kind": "char", "bg": "kitchen", "pose": "hands-on-head", "x": 0.5, "zoom": 0.1}]},
-    {"lines": [10], "shots": [{"kind": "char", "bg": "kitchen", "pose": "talking", "x": 0.6}]},
-    {"lines": [11], "shots": [
-      {"kind": "char", "bg": "kitchen", "pose": "side-eye", "x": 0.4},
-      {"at": 0.3, "kind": "char", "bg": "kitchen", "pose": "puppy-face", "x": 0.4}]},
-    {"lines": [12], "shots": [{"kind": "char", "bg": "kitchen", "pose": "rant", "x": 0.5, "zoom": 0.12}]},
-    {"lines": [13], "shots": [{"kind": "scene", "img": "epic-mirror-reflection", "push": 0.1}]},
-    {"lines": [14], "shots": [{"kind": "char", "bg": "bedroom", "pose": "pointing", "x": 0.5}]},
-    {"lines": [15], "shots": [{"kind": "scene", "img": "scene-cat-leaves", "push": 0.06}]},
-    {"lines": [16], "shots": [{"kind": "scene", "img": "scene-barrier-reach", "push": 0.1}]},
-    {"lines": [17], "shots": [
-      {"kind": "char", "bg": "bedroom", "pose": "talking", "x": 0.45},
-      {"at": 0.55, "kind": "char", "bg": "bedroom", "pose": "chin-stroke", "x": 0.45}]},
-    {"lines": [18], "shots": [{"kind": "scene", "img": "epic-throne-phone", "push": 0.18}]},
-    {"lines": [19], "shots": [{"kind": "char", "bg": "bedroom", "pose": "deadpan", "x": 0.5}]},
-    {"lines": [20], "shots": [{"kind": "scene", "img": "epic-courtyard-sword", "push": 0.1}]},
-    {"lines": [21], "shots": [{"kind": "char", "bg": null, "pose": "intense", "x": 0.5, "height": 1.0, "tint": "warm"}]},
-    {"lines": [22], "shots": [
-      {"kind": "char", "bg": "bedroom", "pose": "talking", "x": 0.5},
-      {"at": 0.45, "kind": "char", "bg": "bedroom", "pose": "phone", "x": 0.5, "tint": "cold"}]},
-    {"lines": [23], "shots": [{"kind": "scene", "img": "scene-gym-sad", "push": 0.06}]},
-    {"lines": [24], "shots": [{"kind": "char", "bg": "bedroom", "pose": "awkward-laugh", "x": 0.5}]},
-    {"lines": [25], "shots": [
-      {"kind": "char", "bg": "bedroom", "pose": "smirk", "x": 0.45},
-      {"at": 0.5, "kind": "char", "bg": "bedroom", "pose": "thumbs-up", "x": 0.45}]},
-    {"lines": [26], "shots": [
-      {"kind": "char", "bg": "bedroom", "pose": "thumbs-up", "x": 0.45},
-      {"at": 0.3, "kind": "char", "bg": "bedroom", "pose": "deadpan", "x": 0.45, "zoom": 0.08}]},
-    {"lines": [27], "shots": [{"kind": "scene", "img": "epic-heaven-wakeup", "push": 0.12}]},
-    {"lines": [28], "shots": [{"kind": "char", "bg": "kitchen", "pose": "talking", "x": 0.35}]},
-    {"lines": [29], "shots": [{"kind": "char", "bg": "kitchen", "pose": "shocked", "x": 0.35}]},
-    {"lines": [30, 31], "shots": [{"kind": "messages"}]},
-    {"lines": [32], "shots": [{"kind": "char", "bg": "kitchen", "pose": "shrug", "x": 0.5, "zoom": 0.08}]},
-    {"lines": [33], "shots": [{"kind": "scene", "img": "epic-cathedral-realization", "push": 0.14, "flashes": [0.6]}]},
-    {"lines": [34], "shots": [
-      {"kind": "char", "bg": "kitchen", "pose": "pinch", "x": 0.4},
-      {"at": 0.55, "kind": "char", "bg": "kitchen", "pose": "arms-crossed-full", "x": 0.4, "height": 0.95}]},
-    {"lines": [35], "shots": [{"kind": "scene", "img": "scene-neighbor-window", "push": 0.05}]},
-    {"lines": [36], "shots": [{"kind": "char", "bg": "kitchen", "pose": "talking", "x": 0.6}]},
-    {"lines": [37], "shots": [{"kind": "char", "bg": "kitchen", "pose": "rant", "x": 0.5}]},
-    {"lines": [38], "shots": [
-      {"kind": "char", "bg": "kitchen", "pose": "smirk", "x": 0.35},
-      {"at": 0.5, "kind": "title", "lines": ["THEY WANT", "YOUR MONEY."], "accent": ["MONEY."]}]},
-    {"lines": [39], "shots": [{"kind": "char", "bg": "kitchen", "pose": "arms-crossed-full", "x": 0.5, "height": 0.95}]},
-    {"lines": [40], "shots": [{"kind": "scene", "img": "epic-dagger-pillow", "push": 0.08}]},
-    {"lines": [41], "shots": [{"kind": "char", "bg": "kitchen", "pose": "puppy-face", "x": 0.5}]},
-    {"lines": [42], "shots": [{"kind": "char", "bg": "kitchen", "pose": "pointing", "x": 0.5, "zoom": 0.1}]},
-    {"lines": [43], "shots": [{"kind": "char", "bg": "kitchen", "pose": "smirk", "x": 0.5, "flashes": [0.35]}]},
-    {"lines": [44], "shots": [{"kind": "scene", "img": "scene-walk-outside", "push": 0.06}]},
-    {"lines": [45], "shots": [{"kind": "char", "bg": "kitchen", "pose": "talking", "x": 0.4}]},
-    {"lines": [46, 47], "shots": [{"kind": "scene", "img": "scene-kid-park", "push": 0.08}]},
-    {"lines": [48], "shots": [{"kind": "char", "bg": null, "pose": "laughing", "x": 0.5}]},
-    {"lines": [49], "shots": [
-      {"kind": "char", "bg": null, "pose": "talking", "x": 0.5},
-      {"at": 0.7, "kind": "char", "bg": null, "pose": "side-eye", "x": 0.5, "zoom": 0.1}]},
-    {"lines": [50, 51], "shots": [{"kind": "scene", "img": "epic-heaven-reborn", "push": 0.1}]},
-    {"lines": [52], "shots": [{"kind": "char", "bg": null, "pose": "smile", "x": 0.5, "tint": "warm"}]},
-    {"lines": [53], "shots": [{"kind": "scene", "img": "scene-family-sunset", "push": 0.06}]},
-    {"lines": [54], "shots": [{"kind": "char", "bg": "bedroom", "pose": "deadpan", "x": 0.5}]},
-    {"lines": [55], "shots": [{"kind": "char", "bg": "bedroom", "pose": "rant", "x": 0.5}]},
-    {"lines": [56], "shots": [
-      {"kind": "char", "bg": "bedroom", "pose": "chin-stroke", "x": 0.45},
-      {"at": 0.5, "kind": "char", "bg": "bedroom", "pose": "hands-on-head", "x": 0.45}]},
-    {"lines": [57], "shots": [{"kind": "char", "bg": null, "pose": "intense", "x": 0.5, "height": 1.0}]},
-    {"lines": [58], "shots": [
-      {"kind": "char", "bg": null, "pose": "shrug", "x": 0.5},
-      {"at": 0.45, "kind": "title", "lines": ["GOLD?", "IT'S A METAL."], "accent": ["METAL."]}]},
-    {"lines": [59], "shots": [{"kind": "scene", "img": "scene-walk-outside", "push": 0.1}]},
-    {"lines": [60], "shots": [{"kind": "char", "bg": "bedroom", "pose": "phone", "x": 0.5, "tint": "cold"}]},
-    {"lines": [61], "shots": [{"kind": "char", "bg": null, "pose": "smile", "x": 0.5, "tint": "warm"}]},
-    {"lines": [62], "shots": [{"kind": "char", "bg": null, "pose": "wave", "x": 0.5}]}
-  ],
-  "music": [
-    {"track": "dark", "lines": [2, 2]},
-    {"track": "dark", "lines": [13, 13]},
-    {"track": "dark", "lines": [18, 18]},
-    {"track": "dark", "lines": [20, 21]},
-    {"track": "dark", "lines": [27, 27]},
-    {"track": "dark", "lines": [33, 33]},
-    {"track": "dark", "lines": [40, 40]},
-    {"track": "warm", "lines": [46, 47]},
-    {"track": "warm", "lines": [50, 53]},
-    {"track": "warm", "lines": [59, 59]},
-    {"track": "warm", "lines": [61, 61]}
-  ],
-  "tracks": {
-    "dark": "youtube/assets/music/test-acapella-dark.mp3",
-    "warm": "youtube/assets/music/test-acapella-warm.mp3"
+  {
+   "lines": [
+    2
+   ],
+   "shots": [
+    {
+     "kind": "scene",
+     "img": "epic-scriptorium-phone",
+     "push": 0.12
+    }
+   ]
   },
-  "sfx": [
-    [1, 0.0, "sizzle", 0.35],
-    [1, 0.78, "record-scratch", 0.8],
-    [3, 0.55, "impact", 0.9],
-    [4, 0.0, "whoosh", 0.7],
-    [8, 0.72, "thud", 1.0],
-    [16, 0.0, "whoosh", 0.8],
-    [22, 0.0, "record-scratch", 0.6],
-    [26, 0.3, "thud", 1.0],
-    [30, 0.6, "phone-buzz", 0.6],
-    [31, 0.0, "phone-buzz", 0.6],
-    [33, 0.6, "thunder", 0.7],
-    [38, 0.5, "impact", 0.8],
-    [43, 0.35, "thunder", 0.8],
-    [58, 0.45, "impact", 0.8]
+  {
+   "lines": [
+    3
+   ],
+   "shots": [
+    {
+     "kind": "char",
+     "bg": "kitchen",
+     "pose": "shrug",
+     "x": 0.33
+    },
+    {
+     "at": 0.55,
+     "kind": "title",
+     "lines": [
+      "WHO WAS",
+      "THAT GUY?"
+     ],
+     "accent": [
+      "GUY?"
+     ]
+    }
+   ]
+  },
+  {
+   "lines": [
+    4
+   ],
+   "shots": [
+    {
+     "kind": "title",
+     "lines": [
+      "CHASE",
+      "OR GET CHASED"
+     ],
+     "accent": [
+      "CHASED"
+     ],
+     "gap": 0.14
+    }
+   ]
+  },
+  {
+   "lines": [
+    5
+   ],
+   "shots": [
+    {
+     "kind": "char",
+     "bg": "kitchen",
+     "pose": "talking",
+     "x": 0.35
+    }
+   ]
+  },
+  {
+   "lines": [
+    6
+   ],
+   "shots": [
+    {
+     "kind": "char",
+     "bg": "kitchen",
+     "pose": "shrug",
+     "x": 0.6
+    }
+   ]
+  },
+  {
+   "lines": [
+    7
+   ],
+   "shots": [
+    {
+     "kind": "char",
+     "bg": "kitchen",
+     "pose": "smirk",
+     "x": 0.4
+    },
+    {
+     "at": 0.4,
+     "kind": "char",
+     "bg": "kitchen",
+     "pose": "deadpan",
+     "x": 0.4,
+     "zoom": 0.08
+    }
+   ]
+  },
+  {
+   "lines": [
+    8
+   ],
+   "shots": [
+    {
+     "kind": "char",
+     "bg": "kitchen",
+     "pose": "smirk",
+     "x": 0.35
+    },
+    {
+     "at": 0.72,
+     "kind": "char",
+     "bg": "kitchen",
+     "pose": "facepalm",
+     "x": 0.35
+    }
+   ]
+  },
+  {
+   "lines": [
+    9
+   ],
+   "shots": [
+    {
+     "kind": "char",
+     "bg": "kitchen",
+     "pose": "hands-on-head",
+     "x": 0.5,
+     "zoom": 0.1
+    }
+   ]
+  },
+  {
+   "lines": [
+    10
+   ],
+   "shots": [
+    {
+     "kind": "char",
+     "bg": "kitchen",
+     "pose": "talking",
+     "x": 0.6
+    }
+   ]
+  },
+  {
+   "lines": [
+    11
+   ],
+   "shots": [
+    {
+     "kind": "char",
+     "bg": "kitchen",
+     "pose": "side-eye",
+     "x": 0.4
+    },
+    {
+     "at": 0.3,
+     "kind": "char",
+     "bg": "kitchen",
+     "pose": "puppy-face",
+     "x": 0.4
+    }
+   ]
+  },
+  {
+   "lines": [
+    12
+   ],
+   "shots": [
+    {
+     "kind": "char",
+     "bg": "kitchen",
+     "pose": "rant",
+     "x": 0.5,
+     "zoom": 0.12
+    }
+   ]
+  },
+  {
+   "lines": [
+    13
+   ],
+   "shots": [
+    {
+     "kind": "scene",
+     "img": "epic-mirror-reflection",
+     "push": 0.1
+    }
+   ]
+  },
+  {
+   "lines": [
+    14
+   ],
+   "shots": [
+    {
+     "kind": "char",
+     "bg": "bedroom",
+     "pose": "pointing",
+     "x": 0.5
+    }
+   ]
+  },
+  {
+   "lines": [
+    15
+   ],
+   "shots": [
+    {
+     "kind": "scene",
+     "img": "scene-cat-leaves",
+     "push": 0.06
+    }
+   ]
+  },
+  {
+   "lines": [
+    16
+   ],
+   "shots": [
+    {
+     "kind": "scene",
+     "img": "scene-barrier-reach",
+     "push": 0.1
+    }
+   ]
+  },
+  {
+   "lines": [
+    17
+   ],
+   "shots": [
+    {
+     "kind": "char",
+     "bg": "bedroom",
+     "pose": "talking",
+     "x": 0.45
+    },
+    {
+     "at": 0.55,
+     "kind": "char",
+     "bg": "bedroom",
+     "pose": "chin-stroke",
+     "x": 0.45
+    }
+   ]
+  },
+  {
+   "lines": [
+    18
+   ],
+   "shots": [
+    {
+     "kind": "scene",
+     "img": "epic-throne-phone",
+     "push": 0.18
+    }
+   ]
+  },
+  {
+   "lines": [
+    19
+   ],
+   "shots": [
+    {
+     "kind": "char",
+     "bg": "bedroom",
+     "pose": "deadpan",
+     "x": 0.5
+    }
+   ]
+  },
+  {
+   "lines": [
+    20
+   ],
+   "shots": [
+    {
+     "kind": "scene",
+     "img": "epic-courtyard-sword",
+     "push": 0.1
+    }
+   ]
+  },
+  {
+   "lines": [
+    21
+   ],
+   "shots": [
+    {
+     "kind": "char",
+     "bg": null,
+     "pose": "intense",
+     "x": 0.5,
+     "height": 1.0,
+     "tint": "warm"
+    }
+   ]
+  },
+  {
+   "lines": [
+    22
+   ],
+   "shots": [
+    {
+     "kind": "char",
+     "bg": "bedroom",
+     "pose": "talking",
+     "x": 0.5
+    },
+    {
+     "at": 0.45,
+     "kind": "char",
+     "bg": "bedroom",
+     "pose": "phone",
+     "x": 0.5,
+     "tint": "cold"
+    }
+   ]
+  },
+  {
+   "lines": [
+    23
+   ],
+   "shots": [
+    {
+     "kind": "scene",
+     "img": "scene-gym-sad",
+     "push": 0.06
+    }
+   ]
+  },
+  {
+   "lines": [
+    24
+   ],
+   "shots": [
+    {
+     "kind": "char",
+     "bg": "bedroom",
+     "pose": "awkward-laugh",
+     "x": 0.5
+    }
+   ]
+  },
+  {
+   "lines": [
+    25
+   ],
+   "shots": [
+    {
+     "kind": "char",
+     "bg": "bedroom",
+     "pose": "smirk",
+     "x": 0.45
+    },
+    {
+     "at": 0.5,
+     "kind": "char",
+     "bg": "bedroom",
+     "pose": "thumbs-up",
+     "x": 0.45
+    }
+   ]
+  },
+  {
+   "lines": [
+    26
+   ],
+   "shots": [
+    {
+     "kind": "char",
+     "bg": "bedroom",
+     "pose": "thumbs-up",
+     "x": 0.45
+    },
+    {
+     "at": 0.3,
+     "kind": "char",
+     "bg": "bedroom",
+     "pose": "deadpan",
+     "x": 0.45,
+     "zoom": 0.08
+    }
+   ]
+  },
+  {
+   "lines": [
+    27
+   ],
+   "shots": [
+    {
+     "kind": "scene",
+     "img": "epic-heaven-wakeup",
+     "push": 0.12
+    }
+   ]
+  },
+  {
+   "lines": [
+    28
+   ],
+   "shots": [
+    {
+     "kind": "char",
+     "bg": "kitchen",
+     "pose": "talking",
+     "x": 0.35
+    }
+   ]
+  },
+  {
+   "lines": [
+    29
+   ],
+   "shots": [
+    {
+     "kind": "char",
+     "bg": "kitchen",
+     "pose": "shocked",
+     "x": 0.35
+    }
+   ]
+  },
+  {
+   "lines": [
+    30,
+    31
+   ],
+   "shots": [
+    {
+     "kind": "messages"
+    }
+   ]
+  },
+  {
+   "lines": [
+    32
+   ],
+   "shots": [
+    {
+     "kind": "char",
+     "bg": "kitchen",
+     "pose": "shrug",
+     "x": 0.5,
+     "zoom": 0.08
+    }
+   ]
+  },
+  {
+   "lines": [
+    33
+   ],
+   "shots": [
+    {
+     "kind": "scene",
+     "img": "epic-cathedral-realization",
+     "push": 0.14,
+     "flashes": [
+      0.6
+     ]
+    }
+   ]
+  },
+  {
+   "lines": [
+    34
+   ],
+   "shots": [
+    {
+     "kind": "char",
+     "bg": "kitchen",
+     "pose": "pinch",
+     "x": 0.4
+    },
+    {
+     "at": 0.55,
+     "kind": "char",
+     "bg": "kitchen",
+     "pose": "arms-crossed-full",
+     "x": 0.4,
+     "height": 0.95
+    }
+   ]
+  },
+  {
+   "lines": [
+    35
+   ],
+   "shots": [
+    {
+     "kind": "scene",
+     "img": "scene-neighbor-window",
+     "push": 0.05
+    }
+   ]
+  },
+  {
+   "lines": [
+    36
+   ],
+   "shots": [
+    {
+     "kind": "char",
+     "bg": "kitchen",
+     "pose": "talking",
+     "x": 0.6
+    }
+   ]
+  },
+  {
+   "lines": [
+    37
+   ],
+   "shots": [
+    {
+     "kind": "char",
+     "bg": "kitchen",
+     "pose": "rant",
+     "x": 0.5
+    }
+   ]
+  },
+  {
+   "lines": [
+    38
+   ],
+   "shots": [
+    {
+     "kind": "char",
+     "bg": "kitchen",
+     "pose": "smirk",
+     "x": 0.35
+    },
+    {
+     "at": 0.5,
+     "kind": "title",
+     "lines": [
+      "THEY WANT",
+      "YOUR MONEY."
+     ],
+     "accent": [
+      "MONEY."
+     ]
+    }
+   ]
+  },
+  {
+   "lines": [
+    39
+   ],
+   "shots": [
+    {
+     "kind": "char",
+     "bg": "kitchen",
+     "pose": "arms-crossed-full",
+     "x": 0.5,
+     "height": 0.95
+    }
+   ]
+  },
+  {
+   "lines": [
+    40
+   ],
+   "shots": [
+    {
+     "kind": "scene",
+     "img": "epic-dagger-pillow",
+     "push": 0.08
+    }
+   ]
+  },
+  {
+   "lines": [
+    41
+   ],
+   "shots": [
+    {
+     "kind": "char",
+     "bg": "kitchen",
+     "pose": "puppy-face",
+     "x": 0.5
+    }
+   ]
+  },
+  {
+   "lines": [
+    42
+   ],
+   "shots": [
+    {
+     "kind": "char",
+     "bg": "kitchen",
+     "pose": "pointing",
+     "x": 0.5,
+     "zoom": 0.1
+    }
+   ]
+  },
+  {
+   "lines": [
+    43
+   ],
+   "shots": [
+    {
+     "kind": "char",
+     "bg": "kitchen",
+     "pose": "smirk",
+     "x": 0.5,
+     "flashes": [
+      0.35
+     ]
+    }
+   ]
+  },
+  {
+   "lines": [
+    44
+   ],
+   "shots": [
+    {
+     "kind": "scene",
+     "img": "scene-walk-outside",
+     "push": 0.06
+    }
+   ]
+  },
+  {
+   "lines": [
+    45
+   ],
+   "shots": [
+    {
+     "kind": "char",
+     "bg": "kitchen",
+     "pose": "talking",
+     "x": 0.4
+    }
+   ]
+  },
+  {
+   "lines": [
+    46,
+    47
+   ],
+   "shots": [
+    {
+     "kind": "scene",
+     "img": "scene-kid-park",
+     "push": 0.08
+    }
+   ]
+  },
+  {
+   "lines": [
+    48
+   ],
+   "shots": [
+    {
+     "kind": "char",
+     "bg": null,
+     "pose": "laughing",
+     "x": 0.5
+    }
+   ]
+  },
+  {
+   "lines": [
+    49
+   ],
+   "shots": [
+    {
+     "kind": "char",
+     "bg": null,
+     "pose": "talking",
+     "x": 0.5
+    },
+    {
+     "at": 0.7,
+     "kind": "char",
+     "bg": null,
+     "pose": "side-eye",
+     "x": 0.5,
+     "zoom": 0.1
+    }
+   ]
+  },
+  {
+   "lines": [
+    50,
+    51
+   ],
+   "shots": [
+    {
+     "kind": "scene",
+     "img": "epic-heaven-reborn",
+     "push": 0.1
+    }
+   ]
+  },
+  {
+   "lines": [
+    52
+   ],
+   "shots": [
+    {
+     "kind": "char",
+     "bg": null,
+     "pose": "smile",
+     "x": 0.5,
+     "tint": "warm"
+    }
+   ]
+  },
+  {
+   "lines": [
+    53
+   ],
+   "shots": [
+    {
+     "kind": "scene",
+     "img": "scene-family-sunset",
+     "push": 0.06
+    }
+   ]
+  },
+  {
+   "lines": [
+    54
+   ],
+   "shots": [
+    {
+     "kind": "char",
+     "bg": "bedroom",
+     "pose": "deadpan",
+     "x": 0.5
+    }
+   ]
+  },
+  {
+   "lines": [
+    55
+   ],
+   "shots": [
+    {
+     "kind": "char",
+     "bg": "bedroom",
+     "pose": "rant",
+     "x": 0.5
+    }
+   ]
+  },
+  {
+   "lines": [
+    56
+   ],
+   "shots": [
+    {
+     "kind": "char",
+     "bg": "bedroom",
+     "pose": "chin-stroke",
+     "x": 0.45
+    },
+    {
+     "at": 0.5,
+     "kind": "char",
+     "bg": "bedroom",
+     "pose": "hands-on-head",
+     "x": 0.45
+    }
+   ]
+  },
+  {
+   "lines": [
+    57
+   ],
+   "shots": [
+    {
+     "kind": "char",
+     "bg": null,
+     "pose": "intense",
+     "x": 0.5,
+     "height": 1.0
+    }
+   ]
+  },
+  {
+   "lines": [
+    58
+   ],
+   "shots": [
+    {
+     "kind": "char",
+     "bg": null,
+     "pose": "shrug",
+     "x": 0.5
+    },
+    {
+     "at": 0.45,
+     "kind": "title",
+     "lines": [
+      "GOLD?",
+      "IT'S A METAL."
+     ],
+     "accent": [
+      "METAL."
+     ]
+    }
+   ]
+  },
+  {
+   "lines": [
+    59
+   ],
+   "shots": [
+    {
+     "kind": "scene",
+     "img": "scene-walk-outside",
+     "push": 0.1
+    }
+   ]
+  },
+  {
+   "lines": [
+    60
+   ],
+   "shots": [
+    {
+     "kind": "char",
+     "bg": "bedroom",
+     "pose": "phone",
+     "x": 0.5,
+     "tint": "cold"
+    }
+   ]
+  },
+  {
+   "lines": [
+    61
+   ],
+   "shots": [
+    {
+     "kind": "char",
+     "bg": null,
+     "pose": "smile",
+     "x": 0.5,
+     "tint": "warm"
+    }
+   ]
+  },
+  {
+   "lines": [
+    62
+   ],
+   "shots": [
+    {
+     "kind": "char",
+     "bg": null,
+     "pose": "wave",
+     "x": 0.5
+    }
+   ]
+  }
+ ],
+ "music": [
+  {
+   "track": "dark",
+   "lines": [
+    2,
+    2
+   ]
+  },
+  {
+   "track": "dark",
+   "lines": [
+    13,
+    13
+   ]
+  },
+  {
+   "track": "dark",
+   "lines": [
+    18,
+    18
+   ]
+  },
+  {
+   "track": "dark",
+   "lines": [
+    20,
+    21
+   ]
+  },
+  {
+   "track": "dark",
+   "lines": [
+    27,
+    27
+   ]
+  },
+  {
+   "track": "dark",
+   "lines": [
+    33,
+    33
+   ]
+  },
+  {
+   "track": "dark",
+   "lines": [
+    40,
+    40
+   ]
+  },
+  {
+   "track": "warm",
+   "lines": [
+    46,
+    47
+   ]
+  },
+  {
+   "track": "warm",
+   "lines": [
+    50,
+    53
+   ]
+  },
+  {
+   "track": "warm",
+   "lines": [
+    59,
+    59
+   ]
+  },
+  {
+   "track": "warm",
+   "lines": [
+    61,
+    61
+   ]
+  }
+ ],
+ "tracks": {
+  "dark": "youtube/assets/music/test-acapella-dark.mp3",
+  "warm": "youtube/assets/music/test-acapella-warm.mp3"
+ },
+ "sfx": [
+  [
+   1,
+   0.0,
+   "sizzle",
+   0.35
+  ],
+  [
+   1,
+   0.78,
+   "record-scratch",
+   0.8
+  ],
+  [
+   3,
+   0.55,
+   "impact",
+   0.9
+  ],
+  [
+   4,
+   0.0,
+   "whoosh",
+   0.7
+  ],
+  [
+   8,
+   0.72,
+   "thud",
+   1.0
+  ],
+  [
+   16,
+   0.0,
+   "whoosh",
+   0.8
+  ],
+  [
+   22,
+   0.0,
+   "record-scratch",
+   0.6
+  ],
+  [
+   26,
+   0.3,
+   "thud",
+   1.0
+  ],
+  [
+   30,
+   0.6,
+   "phone-buzz",
+   0.6
+  ],
+  [
+   31,
+   0.0,
+   "phone-buzz",
+   0.6
+  ],
+  [
+   33,
+   0.6,
+   "thunder",
+   0.7
+  ],
+  [
+   38,
+   0.5,
+   "impact",
+   0.8
+  ],
+  [
+   43,
+   0.35,
+   "thunder",
+   0.8
+  ],
+  [
+   58,
+   0.45,
+   "impact",
+   0.8
   ]
+ ],
+ "bed": {
+  "file": "youtube/assets/music/bed-acapella.mp3",
+  "volume": 0.12
+ }
 }

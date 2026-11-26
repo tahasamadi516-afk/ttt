@@ -144,10 +144,19 @@ def main():
     # Continuous a cappella bed under the whole video (very low), dipped out under the epic cues.
     bed_cfg = plan.get("bed")
     if bed_cfg:
-        ins += ["-stream_loop", "-1", "-i", str(ROOT / bed_cfg["file"])]
+        ins += ["-i", str(ROOT / bed_cfg["file"])]
+        piece = float(subprocess.check_output(["ffprobe", "-v", "error", "-show_entries", "format=duration",
+                                               "-of", "csv=p=0", str(ROOT / bed_cfg["file"])]))
+        xf = 3.0  # seconds of crossfade between copies, so the loop has no seam
+        copies = max(1, int(end_time // (piece - xf)) + 1)
         dips = "+".join(f"between(t,{line_start(c['lines'][0]) - 0.3:.2f},{line_start(c['lines'][1] + 1):.2f})"
                         for c in plan["music"]) or "0"
-        fx.append(f"[{n}:a]aresample=48000,atrim=0:{end_time:.3f},asetpts=PTS-STARTPTS,"
+        chain = f"[{n}:a]aresample=48000,asplit={copies}" + "".join(f"[bc{k}]" for k in range(copies))
+        prev = "[bc0]"
+        for k in range(1, copies):
+            chain += f";{prev}[bc{k}]acrossfade=d={xf}[bx{k}]"
+            prev = f"[bx{k}]"
+        fx.append(chain + f";{prev}atrim=0:{end_time:.3f},asetpts=PTS-STARTPTS,"
                   f"afade=t=in:d=2,afade=t=out:st={end_time - 3:.3f}:d=3,volume={bed_cfg.get('volume', 0.12)},"
                   f"volume=0.15:enable='{dips}'[bed0]")
         n += 1  # not ducked: it's already quiet, and should stay steady under the voice
