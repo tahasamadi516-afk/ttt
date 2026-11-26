@@ -41,3 +41,7 @@ Style anchor image: `.claude/skills/motion-design/paper-cut-style.jpg`.
 - `earshot` + `real-sound` (github.com/Leonxlnx/earshot): make and judge sound effects. Needs the tool: `pip install "earshot @ git+https://github.com/Leonxlnx/earshot"` (not in the setup script yet).
 - Blender skills pack (github.com/arjun988/blender-skills): 94 skills in `.claude/skills/`. Needs Blender + the BlenderMCP addon on the user's own computer to actually run.
 - Network: `go.nicksaraev.com` was allowed on the Default environment so the links could be opened.
+
+## Sample clip: `clips/deserve-hook/`
+13.5s vertical (1080x1920) paper-cut hook using the creator's own words (situationship story). Made with: lemo-opuscar renderer (page in `index.html`), Kokoro voice (`voice/`), earshot paper foley (`sfx/`), mixed in `mix.py`, Blender-skills "stop-motion-craft" look as art direction. Final: `clips/deserve-hook/deserve-hook-clip.mp4`.
+Rebuild: render with `~/lemo-opuscar/core/render/video.mjs`, then `mix.py`, then ffmpeg mux. ffmpeg here is 6.1 (lemo wants 7+), so do the mux by hand and check loudness with `ebur128`.

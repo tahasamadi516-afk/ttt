@@ -1,0 +1,306 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="/core/fonts/fonts.css">
+<style>html,body{margin:0;background:#0b0e1c;overflow:hidden}canvas{display:block}</style></head>
+<body><canvas id="c"></canvas>
+<script type="module">
+import { clamp, lerp, seg, eo, ei, eio, mulberry, TAU } from '/core/lib.js';
+
+const W = 1080, H = 1920, FPS = 12;
+const cv = document.getElementById('c');
+cv.width = innerWidth; cv.height = innerHeight;
+const ctx = cv.getContext('2d');
+const SC = innerWidth / W;
+
+/* ---------- timeline: one source of truth ---------- */
+const T = {
+  q:   { in: 0.50, out: 2.45 },          // "Do you think you deserve better?"
+  up:  { in: 2.95, out: 3.70 },          // "Then get up."
+  doit:{ in: 3.80, out: 5.00 },          // "And do it."
+  strug:{in: 5.55, out: 7.00 },
+  worth:{in: 7.00, out: 8.90 },
+  stairs: [5.5, 6.1, 6.7, 7.3, 7.9, 8.5],
+  star: 8.30,
+  peel: [9.20, 9.95],
+  dont: { in: 10.75 },
+};
+const DUR = 13.5;
+window.DUR = DUR;
+window.EV = [
+  { t: 0.50, type: 'paper' }, { t: 1.00, type: 'paper' }, { t: 1.50, type: 'paper' },
+  { t: 3.20, type: 'snip' },
+  { t: 2.95, type: 'paper' }, { t: 3.80, type: 'paper' }, { t: 4.00, type: 'stamp' },
+  ...T.stairs.map((t, i) => ({ t, type: 'thud', i })),
+  { t: 5.55, type: 'paper' }, { t: 7.00, type: 'paper' },
+  { t: 8.30, type: 'rise' }, { t: 8.75, type: 'chime' },
+  { t: 9.25, type: 'whoosh' },
+  { t: 10.75, type: 'paper' }, { t: 11.10, type: 'stamp' },
+  { t: 0.0, type: 'heart' }, { t: 9.9, type: 'heart' },
+];
+
+const CAPS = [
+  [0.5, 2.7, 'Do you think you deserve better?'],
+  [2.9, 4.7, 'Then get up. And do it.'],
+  [5.2, 7.5, 'The struggle is what makes you worthy'],
+  [7.5, 9.1, "of the thing you're chasing."],
+  [9.5, 10.8, "If you don't have it,"],
+  [10.8, 12.6, "you didn't work for it."],
+];
+
+/* ---------- paper toolkit ---------- */
+const COL = { red: '#d2201f', redHi: '#e23a2c', redLo: '#a3181a', cream: '#efe4cc', kraft: '#c7ad7c',
+              gold: '#dba93a', far: '#222b55', mid: '#19214a', near: '#10163a', floor: '#0b1030' };
+
+function makeGrain() {
+  const g = document.createElement('canvas'); g.width = g.height = 256;
+  const c = g.getContext('2d'), im = c.createImageData(256, 256), r = mulberry(7);
+  for (let i = 0; i < 256 * 256; i++) { const v = 118 + (r() + r() + r() - 1.5) * 70; im.data[i*4] = im.data[i*4+1] = im.data[i*4+2] = v; im.data[i*4+3] = 255; }
+  c.putImageData(im, 0, 0);
+  // fibres
+  c.globalAlpha = .12; c.strokeStyle = '#fff';
+  for (let i = 0; i < 90; i++) { const x = r() * 256, y = r() * 256, a = r() * TAU, l = 6 + r() * 16; c.beginPath(); c.moveTo(x, y); c.lineTo(x + Math.cos(a) * l, y + Math.sin(a) * l); c.stroke(); }
+  return ctx.createPattern(g, 'repeat');
+}
+const GRAIN = makeGrain();
+
+/* hand-cut polygon: rounded rect whose edge wobbles a little */
+function wobblyRect(x0, y0, x1, y1, seed, amp = 3, step = 38, rad = 0) {
+  const r = mulberry(seed), pts = [];
+  const edge = (ax, ay, bx, by) => { const n = Math.max(1, Math.round(Math.hypot(bx - ax, by - ay) / step));
+    for (let i = 0; i < n; i++) { const u = i / n; pts.push([lerp(ax, bx, u) + (r() - .5) * amp * 2, lerp(ay, by, u) + (r() - .5) * amp * 2]); } };
+  edge(x0, y0, x1, y0); edge(x1, y0, x1, y1); edge(x1, y1, x0, y1); edge(x0, y1, x0, y0);
+  return pts;
+}
+function polyPath(c, pts) { c.beginPath(); pts.forEach((p, i) => i ? c.lineTo(p[0], p[1]) : c.moveTo(p[0], p[1])); c.closePath(); }
+function roundedPoly(x0, y0, x1, y1, rad, seed) {
+  // rounded rect sampled as polygon + wobble
+  const r = mulberry(seed), pts = [], arc = (cx, cy, a0) => { for (let k = 0; k <= 5; k++) { const a = a0 + k / 5 * Math.PI / 2; pts.push([cx + Math.cos(a) * rad + (r() - .5) * 2, cy + Math.sin(a) * rad + (r() - .5) * 2]); } };
+  arc(x1 - rad, y0 + rad, -Math.PI / 2); arc(x1 - rad, y1 - rad, 0); arc(x0 + rad, y1 - rad, Math.PI / 2); arc(x0 + rad, y0 + rad, Math.PI);
+  return pts;
+}
+/* one flat paper piece: shadow, colour, grain, inset "yin" contour */
+function piece(c, pts, color, o = {}) {
+  const { sh = 1, inset = false } = o;
+  c.save();
+  if (sh) { c.shadowColor = 'rgba(0,0,0,.5)'; c.shadowBlur = 10 * sh; c.shadowOffsetX = 5 * sh; c.shadowOffsetY = 9 * sh; }
+  polyPath(c, pts); c.fillStyle = color; c.fill();
+  c.restore();
+  c.save(); polyPath(c, pts); c.clip();
+  c.globalAlpha = .2; c.fillStyle = GRAIN; c.fill();
+  c.globalAlpha = 1; c.lineWidth = 3; c.strokeStyle = 'rgba(255,255,255,.22)'; c.translate(-1, -1); polyPath(c, pts); c.stroke(); c.translate(1, 1);
+  c.restore();
+  if (inset) {
+    let cx = 0, cy = 0; pts.forEach(p => { cx += p[0]; cy += p[1]; }); cx /= pts.length; cy /= pts.length;
+    const q = pts.map(p => [cx + (p[0] - cx) * .8, cy + (p[1] - cy) * .8]);
+    c.save(); polyPath(c, q); c.lineWidth = 3; c.strokeStyle = 'rgba(70,5,8,.45)'; c.setLineDash([22, 9]); c.stroke(); c.restore();
+  }
+}
+
+/* cut-out letters: cached per glyph, grain baked in */
+const LC = new Map();
+function glyph(ch, size, color) {
+  const key = ch + size + color; if (LC.has(key)) return LC.get(key);
+  const f = `400 ${size}px 'Lilita One'`;
+  const m = document.createElement('canvas').getContext('2d'); m.font = f;
+  const adv = m.measureText(ch).width, pad = 24, w = Math.ceil(adv + pad * 2), h = Math.ceil(size * 1.3 + pad * 2);
+  const c = document.createElement('canvas'); c.width = w; c.height = h; const g = c.getContext('2d');
+  g.font = f; g.textBaseline = 'alphabetic'; g.fillStyle = color; g.fillText(ch, pad, pad + size);
+  g.globalCompositeOperation = 'source-atop'; g.globalAlpha = .22; g.fillStyle = GRAIN; g.fillRect(0, 0, w, h);
+  g.globalAlpha = 1;
+  const o = { c, adv, pad, size }; LC.set(key, o); return o;
+}
+const tm = document.createElement('canvas').getContext('2d');
+/* a line of cut letters: letters pop in on twos, leave by falling off */
+function cutLine(c, t, text, cx, cy, size, color, tin, tout, seed) {
+  const r = mulberry(seed);
+  const gl = [...text].map(ch => glyph(ch, size, color));
+  const sp = size * .03, total = gl.reduce((a, g) => a + g.adv + sp, -sp);
+  let x = cx - total / 2;
+  const tt = Math.floor(t * FPS) / FPS;
+  gl.forEach((g, k) => {
+    const rot = (r() - .5) * .1, dy = (r() - .5) * size * .06, jx = (r() - .5) * 3;
+    const u = tt - (tin + k * 0.04); const gx = x; x += g.adv + sp;
+    if (u < 0 || text[k] === ' ') return;
+    const f = Math.floor(u * FPS), pop = [.6, 1.2, 1.07][f] || 1;
+    let yy = cy + dy - (f < 3 ? [60, 14, 0][f] : 0), rr = rot, vis = 1;
+    const v = tt - (tout + k * 0.03);
+    if (v > 0) { yy += v * v * 14000; rr += v * (k % 2 ? 1.8 : -1.8); if (yy > H + 400) vis = 0; }
+    if (!vis) return;
+    c.save();
+    c.translate(gx + g.adv / 2 + jx, yy - size * .35); c.rotate(rr); c.scale(pop, pop);
+    c.shadowColor = 'rgba(0,0,0,.55)'; c.shadowBlur = 9; c.shadowOffsetX = 5; c.shadowOffsetY = 9;
+    c.drawImage(g.c, -g.adv / 2 - g.pad, -g.pad - size * .65);
+    c.restore();
+  });
+}
+
+/* ---------- stage: dyed-paper layers ---------- */
+function stage(c, seed) {
+  c.fillStyle = '#0d1230'; c.fillRect(0, 0, W, H);
+  c.save(); c.globalAlpha = .35; c.fillStyle = GRAIN; c.fillRect(0, 0, W, H); c.restore();
+  const hills = [[COL.far, 1180, 80], [COL.mid, 1300, 60], [COL.near, 1390, 40]];
+  hills.forEach(([col, y, a], i) => {
+    const r = mulberry(seed + i * 9), pts = [[0, H], [0, y]];
+    for (let x = 0; x <= W; x += 54) pts.push([x, y - Math.sin(x * .004 + i * 2) * a + (r() - .5) * 14]);
+    pts.push([W, H]); piece(c, pts, col, { sh: .8 });
+  });
+  const fl = wobblyRect(-20, 1450, W + 20, H + 30, seed + 77, 3, 44);
+  piece(c, fl, COL.floor, { sh: 1.2 });
+  // sawtooth fringe along the floor edge (folk cut)
+  const sp = []; for (let x = -10; x <= W + 10; x += 30) { sp.push([x, 1452]); sp.push([x + 15, 1436]); }
+  sp.push([W + 10, 1470], [-10, 1470]); piece(c, sp, COL.floor, { sh: .6 });
+}
+
+/* ---------- the paper figure ---------- */
+const LEG = 112, BODYH = 132, BODYW = 98, HEAD = 48, ARM = 104;
+function part(c, ang, w, h, color, seed, o) {   // pivot at top-centre
+  c.save(); c.rotate(ang);
+  piece(c, roundedPoly(-w / 2, 0, w / 2, h, Math.min(w, h) * .36, seed), color, o);
+  c.restore();
+}
+function figure(c, x, y, p) {      // x,y = feet on ground
+  c.save(); c.translate(x, y - p.lift);
+  const hipY = -LEG * p.legK;
+  // far leg + far arm first
+  c.save(); c.translate(-14, hipY); part(c, p.legB, 36, LEG, COL.redLo, 11, { sh: .6 }); c.restore();
+  c.save(); c.translate(0, hipY - BODYH + 18); c.rotate(p.lean);
+  c.save(); c.translate(-40, 0); part(c, p.armB, 30, ARM, COL.redLo, 12, { sh: .6 }); c.restore();
+  // body
+  c.save(); c.translate(0, BODYH - 18 - BODYH); piece(c, roundedPoly(-BODYW / 2, 0, BODYW / 2, BODYH, 34, 13), COL.red, { inset: true }); c.restore();
+  // head: a disc, faceless, with a single hair-cut crescent
+  c.save(); c.translate(6, -HEAD - 10 + p.headDy); c.rotate(p.head);
+  const hp = []; for (let k = 0; k < 28; k++) { const a = k / 28 * TAU; hp.push([Math.cos(a) * HEAD + Math.sin(k * 3) * 1.2, Math.sin(a) * HEAD + Math.cos(k * 5) * 1.2]); }
+  piece(c, hp, COL.redHi, { inset: true });
+  const cr = []; for (let k = 0; k <= 10; k++) { const a = Math.PI * 1.05 + k / 10 * Math.PI * .9; cr.push([Math.cos(a) * (HEAD - 8), Math.sin(a) * (HEAD - 8)]); }
+  for (let k = 10; k >= 0; k--) { const a = Math.PI * 1.05 + k / 10 * Math.PI * .9; cr.push([Math.cos(a) * (HEAD - 22), Math.sin(a) * (HEAD - 22) - 4]); }
+  piece(c, cr, COL.redLo, { sh: 0 });
+  c.restore();
+  c.save(); c.translate(40, 0); part(c, p.armF, 30, ARM, COL.red, 14, { sh: .8 }); c.restore();
+  c.restore();
+  c.save(); c.translate(14, hipY); part(c, p.legF, 36, LEG, COL.red, 15, { sh: .8, inset: true }); c.restore();
+  c.restore();
+}
+const POSE = {
+  sit:   { legK: .16, lean: .10, head: .35, headDy: 18, armF: .75, armB: .6, legF: 1.52, legB: 1.46, lift: 0 },
+  crouch:{ legK: .70, lean: .35, head: .10, headDy: 6,  armF: .3,  armB: .2, legF: .9,   legB: -.4,  lift: 0 },
+  stand: { legK: 1,   lean: 0,   head: 0,   headDy: 0,  armF: .1,  armB: -.1, legF: 0,   legB: 0,    lift: 0 },
+  fist:  { legK: 1,   lean: -.04,head: -.12,headDy: -2, armF: -2.7, armB: .25, legF: 0.05,legB: -.05, lift: 0 },
+  reach: { legK: 1,   lean: -.08,head: -.28,headDy: -4, armF: -2.25,armB: .2, legF: 0.1, legB: -.1,   lift: 0 },
+  look:  { legK: 1,   lean: -.05,head: -.45,headDy: -6, armF: .1,  armB: -.1, legF: 0,   legB: 0,    lift: 0 },
+};
+const mix = (a, b, u) => { const o = {}; for (const k in a) o[k] = lerp(a[k], b[k], u); return o; };
+const walk = (t, base) => { const s = Math.sin(t * TAU * 2.4); return { ...base, legF: s * .55, legB: -s * .55, armF: -s * .5, armB: s * .5 }; };
+
+/* figure over time (scene C: ground + stairs). returns {x, y, pose} */
+const STEP_W = 100, STEP_H = 78, STEP_X0 = 330, FLOOR = 1450;
+const stepTop = i => FLOOR - (i + 1) * STEP_H, stepX = i => STEP_X0 + i * STEP_W;
+function figC(t) {
+  const tt = Math.floor(t * FPS) / FPS;
+  const x0 = 190, y0 = FLOOR;
+  if (tt < 3.0) return { x: x0, y: y0, pose: POSE.sit };
+  if (tt < 3.25) return { x: x0, y: y0, pose: POSE.crouch };
+  if (tt < 3.9) { const u = seg(tt, 3.25, 3.9); return { x: x0, y: y0 - Math.sin(u * Math.PI) * 60 * (u < .5 ? 1 : 1), pose: mix(POSE.crouch, POSE.stand, eo(u)) }; }
+  if (tt < 5.2) return { x: x0, y: y0, pose: tt > 3.95 && tt < 4.9 ? POSE.fist : POSE.stand };
+  // walk to the foot of the stairs
+  if (tt < 5.9) { const u = seg(tt, 5.2, 5.9); return { x: lerp(x0, 250, u), y: y0, pose: walk(tt, POSE.stand) }; }
+  // climb: after each block lands, hop onto it
+  let x = 250, y = y0, pose = walk(tt, POSE.stand);
+  for (let i = 0; i < 6; i++) {
+    const a = T.stairs[i] + .22, b = a + .38, fx = i ? stepX(i - 1) : 250, fy = i ? stepTop(i - 1) : y0;
+    if (tt >= a && tt < b) { const u = seg(tt, a, b); x = lerp(fx, stepX(i), u); y = lerp(fy, stepTop(i), eo(u)) - Math.sin(u * Math.PI) * 70; pose = walk(tt, POSE.stand); return { x, y, pose }; }
+    if (tt >= b) { x = stepX(i); y = stepTop(i); pose = POSE.stand; }
+    else if (tt >= (i ? T.stairs[i] - .0 : 0) && tt < a) { return { x: i ? stepX(i - 1) : 250, y: i ? stepTop(i - 1) : y0, pose: POSE.stand }; }
+  }
+  if (tt > 8.85) pose = POSE.reach;
+  return { x, y, pose };
+}
+
+/* star: gold foil, yang cut, one late accent */
+function star(c, x, y, t, pop) {
+  const tt = Math.floor(t * FPS) / FPS, u = tt - pop; if (u < 0) return;
+  const s = [.4, 1.25, 1.1][Math.floor(u * FPS)] || 1;
+  c.save(); c.translate(x, y + Math.sin(tt * 2.2) * 6); c.scale(s, s);
+  const gl = c.createRadialGradient(0, 0, 10, 0, 0, 230); gl.addColorStop(0, 'rgba(219,169,58,.38)'); gl.addColorStop(1, 'rgba(219,169,58,0)');
+  c.fillStyle = gl; c.fillRect(-240, -240, 480, 480);
+  c.rotate(Math.floor(tt * 3) * .04);
+  const pts = []; for (let k = 0; k < 10; k++) { const a = -Math.PI / 2 + k * Math.PI / 5, r = k % 2 ? 46 : 100; pts.push([Math.cos(a) * r, Math.sin(a) * r]); }
+  piece(c, pts, COL.gold, { sh: 1.2, inset: true });
+  c.beginPath(); c.arc(0, 4, 12, 0, TAU); c.fillStyle = '#0d1230'; c.fill();
+  c.restore();
+}
+
+/* stairs: kraft-paper blocks that drop in with a stepped bounce */
+function stairs(c, t) {
+  T.stairs.forEach((ts, i) => {
+    const tt = Math.floor(t * FPS) / FPS, u = tt - ts; if (u < 0) return;
+    const f = Math.floor(u * FPS), dy = [-420, -140, 14, -6][f] ?? 0;
+    const top = stepTop(i), x = stepX(i) - STEP_W / 2;
+    const pts = wobblyRect(x, top + dy, x + STEP_W - 4, FLOOR + 6 + dy, 40 + i, 2.2, 30);
+    piece(c, pts, i % 2 ? '#bda06c' : COL.kraft, { sh: 1 });
+    // fold-cut sawtooth along the tread
+    const sp = []; for (let k = 0; k <= 6; k++) { sp.push([x + 6 + k * 14, top + dy + 3]); sp.push([x + 13 + k * 14, top + dy + 14]); }
+    c.save(); polyPath(c, sp); c.fillStyle = 'rgba(80,50,20,.35)'; c.fill(); c.restore();
+  });
+}
+
+/* ---------- captions: a paper strip, pasted on in two steps ---------- */
+function captions(c, t) {
+  const tt = Math.floor(t * FPS) / FPS;
+  const cap = CAPS.find(([a, b]) => tt >= a && tt < b); if (!cap) return;
+  const u = Math.floor((tt - cap[0]) * FPS), off = [90, 24][u] ?? 0;
+  c.save(); c.font = "600 50px 'Fredoka'"; const w = Math.min(W - 70, c.measureText(cap[2]).width + 90);
+  const pts = wobblyRect((W - w) / 2, 1688 + off, (W + w) / 2, 1776 + off, 301 + Math.floor(cap[0] * 10), 2.5, 28);
+  piece(c, pts, '#8f1114', { sh: .9 });
+  c.fillStyle = COL.cream; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText(cap[2], W / 2, 1734 + off); c.restore();
+}
+
+/* ---------- scenes ---------- */
+function sceneC(c, t) {
+  stage(c, 100);
+  const f = figC(t);
+  stairs(c, t);
+  star(c, 960, 760, t, T.star);
+  figure(c, f.x, f.y, f.pose);
+  cutLine(c, t, 'DO YOU THINK', W / 2, 420, 118, COL.cream, T.q.in, T.q.out, 1);
+  cutLine(c, t, 'YOU DESERVE', W / 2, 560, 118, COL.cream, T.q.in + .5, T.q.out + .05, 2);
+  cutLine(c, t, 'BETTER?', W / 2, 800, 235, COL.red, T.q.in + 1.0, T.q.out + .1, 3);
+  cutLine(c, t, 'THEN', W / 2, 470, 150, COL.cream, T.up.in, T.up.out, 4);
+  cutLine(c, t, 'GET UP.', W / 2, 740, 250, COL.red, T.up.in + .25, T.up.out + .05, 5);
+  cutLine(c, t, 'AND', W / 2, 470, 150, COL.cream, T.doit.in, T.doit.out, 6);
+  cutLine(c, t, 'DO IT.', W / 2, 780, 290, COL.red, T.doit.in + .15, T.doit.out + .05, 7);
+  cutLine(c, t, 'STRUGGLE', W / 2, 520, 168, COL.cream, T.strug.in, T.strug.out, 8);
+  cutLine(c, t, 'WORTHY', W / 2, 520, 190, COL.red, T.worth.in, T.worth.out, 9);
+}
+function sceneD(c, t) {
+  stage(c, 500);
+  star(c, 960, 760, t, -9);
+  const tt = Math.floor(t * FPS) / FPS;
+  figure(c, 190, FLOOR, tt > 10.0 ? POSE.look : POSE.stand);
+  cutLine(c, t, "YOU DIDN'T", W / 2, 400, 118, COL.cream, T.dont.in, 99, 21);
+  cutLine(c, t, 'WORK FOR', W / 2, 620, 190, COL.red, T.dont.in + .3, 99, 22);
+  cutLine(c, t, 'IT.', W / 2, 840, 190, COL.red, T.dont.in + .65, 99, 23);
+}
+
+window.render = (t) => {
+  ctx.setTransform(SC, 0, 0, SC, 0, 0);
+  sceneD(ctx, t);
+  const [p0, p1] = T.peel;
+  if (t < p1) {
+    const p = seg(Math.floor(t * FPS) / FPS, p0, p1);
+    ctx.save();
+    // the whole sheet is peeled off and flies away to the right
+    ctx.translate(ei(p) * 1500, ei(p) * -260); ctx.translate(0, H); ctx.rotate(ei(p) * .55); ctx.translate(0, -H);
+    ctx.save(); ctx.shadowColor = 'rgba(0,0,0,.6)'; ctx.shadowBlur = 40; ctx.shadowOffsetX = -14; ctx.shadowOffsetY = 10; ctx.fillStyle = '#0d1230'; ctx.fillRect(0, 0, W, H); ctx.restore();
+    ctx.beginPath(); ctx.rect(0, 0, W, H); ctx.clip();
+    sceneC(ctx, t);
+    ctx.restore();
+  }
+  captions(ctx, t);
+  // end: paper settles, soft vignette
+  const v = ctx.createRadialGradient(W / 2, H / 2, 700, W / 2, H / 2, 1350); v.addColorStop(0, 'rgba(0,0,0,0)'); v.addColorStop(1, 'rgba(0,0,0,.45)');
+  ctx.fillStyle = v; ctx.fillRect(0, 0, W, H);
+};
+
+await document.fonts.load("400 100px 'Lilita One'"); await document.fonts.load("600 50px 'Fredoka'");
+window.READY = true;
+</script></body></html>
