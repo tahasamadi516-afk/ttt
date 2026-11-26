@@ -64,6 +64,9 @@ not gonna lie, trust me, you know what I'm saying, the struggle, act like it.
 - Faceless (voiceover + visuals). English.
 
 ## Rule for scripts
-The creator brings the script ready. Keep their words and rhythm as written. Don't polish,
-soften or "improve" them. Edits only for cuts, shorts, titles, descriptions and timing, and
-those must sound like the creator too (see the book and how they talk above).
+The creator brings the script ready. Use THEIR words, don't invent new ones, and keep their
+tone. But rearranging is allowed and wanted: reshuffle the order, pull the strongest line
+up front as a hook, tighten, cut, and shape it so it grabs attention and holds (hooks,
+open loops, retention beats, shorts that land on their own).
+Not allowed: adding new claims, facts or advice they didn't say, or swapping their words
+for polished creator-speak. Titles, descriptions and shorts must sound like them too.
