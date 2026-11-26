@@ -19,6 +19,7 @@
     intro:   "pop"      how the shot enters: "pop" (quick zoom settle + light flash) or "none"
     env:     [0..1, ...] voice loudness per frame (30 fps) -> talking bounce on the cutout
     particles: "embers" | "dust" | "feathers" | "rain" | "motes" | null
+    frame:   {"scale": 1.3, "ox": 0.5, "oy": 0.3}   camera framing (punch-in around a point; 1 = wide)
 -->
 <html><head><meta charset="utf-8">
 <script src="lib.js"></script>
@@ -68,6 +69,8 @@
   const shadow = document.getElementById('shadow'), capEl = document.getElementById('cap');
   const flashes = param('flashes', []), hits = param('hits', []), zoom = param('zoom', 0);
   const intro = param('intro', 'pop'), env = param('env', []);
+  const frame = Object.assign({ scale: 1, ox: 0.5, oy: 0.45 }, param('frame', {}));
+  cam.style.transformOrigin = `${frame.ox * 100}% ${frame.oy * 100}%`;
   const flashEl = document.getElementById('flash');
 
   // Punchline: words pop in one after another.
@@ -135,11 +138,12 @@
     let fl = 0, hk = 0;
     flashes.forEach((f) => { if (t >= f) fl = Math.max(fl, 1 - prog(t, f, 0.35)); });
     hits.forEach((h) => { if (t >= h) hk = Math.max(hk, 1 - prog(t, h, 0.3)); });
-    const introK = intro === 'pop' ? 1 - ease.out(prog(t, 0, 0.22)) : 0;
-    flashEl.style.opacity = Math.max(fl * 0.9, introK * 0.12);
+    // "pop": quick zoom settle + faint flash (first cut of a beat); "soft": zoom settle only.
+    const introK = intro === 'pop' || intro === 'soft' ? 1 - ease.out(prog(t, 0, intro === 'soft' ? 0.3 : 0.22)) : 0;
+    flashEl.style.opacity = Math.max(fl * 0.55, intro === 'pop' ? introK * 0.08 : 0);
     const [sx, sy] = shake(t, 18 * fl + 12 * hk);
-    const snap = zoom * (1 - ease.out(prog(t, 0, 0.35))) + introK * 0.035;
-    cam.style.transform = `translate(${sx}px, ${sy}px) scale(${1 + snap + push * ease.inOut(clamp(t / 8))})`;
+    const snap = zoom * (1 - ease.out(prog(t, 0, 0.35))) + introK * (intro === 'soft' ? 0.02 : 0.035);
+    cam.style.transform = `translate(${sx}px, ${sy}px) scale(${frame.scale * (1 + snap + push * ease.inOut(clamp(t / 8)))})`;
 
     // Talking motion from the voice envelope (30 fps samples), smoothed.
     const fi = Math.floor(t * 30);
@@ -177,7 +181,7 @@
       labelEl.style.transform = `translateX(${(1 - inK) * -40}px)`;
       labelEl.querySelector('.bar').style.transform = `scaleX(${ease.out(prog(t, 0.35, 0.5))})`;
     }
-    drawGrain(t, 0.05);
+    drawGrain(t, 0.035);
   };
 </script>
 </body></html>

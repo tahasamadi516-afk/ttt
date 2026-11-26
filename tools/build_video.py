@@ -68,6 +68,41 @@ def main():
             f1 = a + (b - a) * ss[j + 1]["at"] if j + 1 < len(ss) else b
             shots.append((round(f0 * FPS), round(f1 * FPS), s))
 
+    # 2b. Auto-cut: no character/scene shot holds longer than ~2.8 s. Long shots are split into
+    # pieces with different camera framings (wide / close-up on the face / medium), so the frame
+    # changes every 2-3 seconds. Punchlines are pinned to absolute time so they stay up across cuts.
+    max_len = plan["defaults"].get("max_shot", 2.8)
+    CHAR_FRAMES = [None, {"scale": 1.32, "oy": 0.22}, {"scale": 1.12, "oy": 0.42}]
+    SCENE_FRAMES = [None, {"scale": 1.18, "ox": 0.6, "oy": 0.5}, {"scale": 1.14, "ox": 0.4, "oy": 0.45}]
+    cut = []
+    for f0, f1, s in shots:
+        dur = (f1 - f0) / FPS
+        s = dict(s)
+        if "punch" in s and "at_frac" in s["punch"]:
+            s["punch"] = dict(s["punch"])
+            s["punch"]["abs"] = f0 / FPS + dur * s["punch"].pop("at_frac")
+        if s["kind"] not in ("char", "scene") or dur <= max_len * 1.15:
+            cut.append((f0, f1, s))
+            continue
+        n = max(2, round(dur / 2.5))
+        bounds = [round(f0 + (f1 - f0) * k / n) for k in range(n + 1)]
+        frames = CHAR_FRAMES if s["kind"] == "char" else SCENE_FRAMES
+        for k in range(n):
+            sub = dict(s)
+            sub["_offset"] = (bounds[k] - f0) / FPS
+            fr = frames[k % len(frames)]
+            if fr:
+                fr = dict(fr)
+                if s["kind"] == "char":
+                    fr.setdefault("ox", s.get("x", 0.5))
+                sub["frame"] = fr
+            if k > 0:
+                sub.pop("label", None)
+                sub["zoom"] = 0
+                sub["intro"] = "soft"
+            cut.append((bounds[k], bounds[k + 1], sub))
+    shots = cut
+
     # 3a. Voice track (built first: the talking motion reads its loudness): every line placed at its start, then the studio polish chain.
     vin, vf = [], []
     clean = vdir / "voice" / "clean"
@@ -112,20 +147,28 @@ def main():
         for key in ("punch", "label", "particles", "captions"):
             if key in s:
                 extra[key] = dict(s[key]) if isinstance(s[key], dict) else s[key]
-        if "punch" in extra and "at_frac" in extra["punch"]:   # punch time as a share of the shot
-            extra["punch"]["at"] = round((t1 - t0) * extra["punch"].pop("at_frac"), 3)
+        if "punch" in extra and "abs" in extra["punch"]:       # punch pinned to absolute time
+            at = extra["punch"].pop("abs") - t0
+            if at >= t1 - t0:
+                extra.pop("punch")                              # appears in a later piece
+            else:
+                extra["punch"]["at"] = round(at, 3)             # negative = already on screen
+        off = s.get("_offset", 0.0)
+        flashes = [round(f - off, 3) for f in s.get("flashes", []) if f >= off]
+        if "frame" in s:
+            extra["frame"] = s["frame"]
         if k == "char":
             bg = plan["bgs"].get(s.get("bg")) if s.get("bg") else None
             p = {"poses": [{"src": rel_from_scenes(f"youtube/assets/character/{s['pose']}.png"), "at": 0}],
                  "x": s.get("x", 0.5), "height": s.get("height", 0.92), "push": s.get("push", 0.05),
-                 "tint": s.get("tint", "none"), "flashes": s.get("flashes", []), "zoom": s.get("zoom", 0),
+                 "tint": s.get("tint", "none"), "flashes": flashes, "zoom": s.get("zoom", 0),
                  "env": env[f0:f1].tolist(), **extra}
             if bg:
                 p["bg"] = rel_from_scenes(bg)
             return "character.html", p
         if k == "scene":
             return "character.html", {"bg": rel_from_scenes(f"youtube/assets/backgrounds/{s['img']}.png"),
-                                       "push": s.get("push", 0.08), "flashes": s.get("flashes", []),
+                                       "push": s.get("push", 0.08), "flashes": flashes,
                                        "zoom": s.get("zoom", 0), "tint": s.get("tint", "none"), **extra}
         if k == "title":
             return "title.html", {"lines": s["lines"], "accent": s.get("accent", []), "gap": s.get("gap", 0.18),
@@ -214,8 +257,14 @@ def main():
 
     # 6. Mux.
     final = vdir / ("preview.mp4" if preview else "final.mp4")
+    # Easy-on-the-eyes grade: lifted blacks, softened whites, a little less contrast and saturation,
+    # slightly warm. Applied once to the whole video.
+    grade = plan["defaults"].get("grade", "eq=contrast=0.94:saturation=0.9:gamma=1.03,"
+                                 "colorbalance=rm=0.02:bm=-0.02:rh=0.01:bh=-0.015,"
+                                 "curves=all='0/0.035 0.5/0.51 1/0.95'")
     sh(["ffmpeg", "-loglevel", "error", "-y", "-i", str(build / "video.mp4"), "-i", str(build / "mix.wav"),
-        "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-shortest", "-movflags", "+faststart", str(final)])
+        "-vf", grade, "-c:v", "libx264", "-preset", "slow", "-crf", "17", "-pix_fmt", "yuv420p",
+        "-c:a", "aac", "-b:a", "192k", "-shortest", "-movflags", "+faststart", str(final)])
     print("wrote", final.relative_to(ROOT))
 
 
