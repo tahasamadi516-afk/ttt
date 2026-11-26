@@ -1,11 +1,11 @@
 """Make every directed line sound like the same person: convert its voice texture to voice E.
 
 Run with the chatterbox venv:
-    ~/chatterbox/.venv/bin/python youtube/voice-clone/convert_voice.py <in_voice_dir> <out_voice_dir> [--target ref-voice-e.wav]
+    ~/chatterbox/.venv/bin/python youtube/voice-clone/convert_voice.py <in_voice_dir> <out_voice_dir> [--target ref-voice-final.wav] [--keep 3,22]
 
 Directed lines (direct_voice.py) each get their own performance, so the voice drifts a little
 from line to line. Chatterbox voice conversion keeps each line's words, timing and emotion and
-re-voices it with the target speaker, so all lines share one voice. Bleeps are re-drawn
+re-voices it with the target speaker (ref-voice-final.wav: the creator's two favorite takes, lines 3 and 22), so all lines share one voice. Bleeps are re-drawn
 afterwards as a clean tone (the converter smears them). Copies line_NNN.json and lines.json,
 updating durations. Resumable. Note: Chatterbox adds an inaudible AI watermark (Perth) to its output.
 """
@@ -26,8 +26,9 @@ HERE = Path(__file__).parent
 
 def main():
     argv = sys.argv[1:]
-    target = Path(argv[argv.index("--target") + 1]) if "--target" in argv else HERE / "ref-voice-e.wav"
-    args = [a for i, a in enumerate(argv) if not a.startswith("--") and not (i and argv[i - 1] == "--target")]
+    target = Path(argv[argv.index("--target") + 1]) if "--target" in argv else HERE / "ref-voice-final.wav"
+    keep = {int(x) for x in argv[argv.index("--keep") + 1].split(",")} if "--keep" in argv else set()
+    args = [a for i, a in enumerate(argv) if not a.startswith("--") and not (i and argv[i - 1] in ("--target", "--keep"))]
     src, dst = Path(args[0]), Path(args[1])
     dst.mkdir(parents=True, exist_ok=True)
     torch.set_num_threads(4)
@@ -39,6 +40,10 @@ def main():
         if meta_src.exists():
             shutil.copy(meta_src, dst / meta_src.name)
         if out.exists():
+            continue
+        if i in keep:  # lines the target voice was built from: keep the original take
+            shutil.copy(src / ln["file"], out)
+            print(f"[{i}/{len(lines)}] {out.name} (kept original)", flush=True)
             continue
         w = m.generate(str(src / ln["file"]), target_voice_path=str(target))
         sr = m.sr

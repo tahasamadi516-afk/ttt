@@ -58,13 +58,16 @@ Not stated yet. Default from the script: speak from his own experience and
 opinion, and never invent stats or studies.
 
 ## Voice (audio)
-**Channel voice: "E"**, a designed voice (male, early 20s, General American, clear medium-deep,
-natural and grounded, like thinking out loud to a friend). Qwen3-TTS, Apache 2.0, free for
-commercial use. Details: `youtube/voice-clone/voice-e.md`. Narrate with `narrate_qwen.py`.
-Scripts must be written FOR this voice: short punchy sentences that end hard, no filler, no
-acted-out voices (put those on screen instead). Video 01 v1 vs v3 shows the difference.
-Swearing: f-words bleeped; "shit" becomes "crap", "hell" becomes "heck".
-Older options kept as fallbacks: Kokoro am_puck (`narrate_kokoro.py`), his own clone (`narrate.py`).
+**Channel voice: the "final" voice** (picked by the creator as "absolute perfection").
+How it's made, per video:
+1. `direct_voice.py`: every line performed by Qwen3-TTS VoiceDesign from its own acting note
+   (`directions.json` next to the script), 3 takes, closest to voice E kept.
+2. `convert_voice.py`: every line voice-converted (Chatterbox VC) to `ref-voice-final.wav`, which is
+   the creator's two favorite takes from video 01 ("Bro. Who was that guy?" and "Forgot them.
+   Completely."). Same acting per line, one consistent voice.
+Persona: male, early 20s, General American, clear medium-deep, natural and grounded, relaxed and
+never rushed. Scripts are written FOR this voice: short punchy sentences, no filler, no acted-out
+voices (put those on screen). Swearing: f-words bleeped; "shit" -> "crap", "hell" -> "heck".
 
 ## Format
 - Faceless: voiceover plus the animated character, motion graphics and documentary visuals.
