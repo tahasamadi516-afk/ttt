@@ -6,7 +6,8 @@ Usage:
 
 How it works: the key color is sampled from the image corners (the background is
 generated as flat green, but it's never exactly #00FF00). A pixel's distance from
-that color sets its alpha, with a soft edge band. Green spill on the edges is then
+that color sets its alpha, with a soft edge band. Only the largest connected shape is kept
+(drops speech bubbles and stray marks). Green spill on the edges is then
 removed by clamping green to max(red, blue). --crop trims the empty transparent
 border so the cutout is easy to place in a scene.
 """
@@ -14,6 +15,7 @@ import sys
 
 import numpy as np
 from PIL import Image, ImageFilter
+from scipy import ndimage
 
 
 def key(img: Image.Image, inner: float = 60.0, outer: float = 130.0) -> Image.Image:
@@ -36,6 +38,14 @@ def key(img: Image.Image, inner: float = 60.0, outer: float = 130.0) -> Image.Im
     r, g, b = rgb[..., 0], rgb[..., 1], rgb[..., 2]
     g = np.minimum(g, np.maximum(r, b) * 1.02)
     out = np.dstack([r, g, b, alpha * 255]).clip(0, 255).astype(np.uint8)
+
+    # Keep only the biggest connected shape (the character). This drops stray things
+    # the image model sometimes adds, like speech bubbles or floating marks.
+    labels, n = ndimage.label(alpha > 0.5)
+    if n > 1:
+        sizes = ndimage.sum(np.ones_like(alpha), labels, range(1, n + 1))
+        keep = ndimage.binary_dilation(labels == (np.argmax(sizes) + 1), iterations=3)
+        out[..., 3] = (out[..., 3] * keep).astype(np.uint8)
 
     im = Image.fromarray(out, "RGBA")
     # Shrink the matte by a pixel and soften it, to kill the green halo.

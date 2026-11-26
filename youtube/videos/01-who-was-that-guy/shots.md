@@ -65,6 +65,23 @@ Music: **A** = dark/haunting a cappella bed, **B** = warm/hopeful a cappella bed
 | 54 | "Don't waste it, man. Enjoy it." | warm smile | NEW: genuine smile | B soft |
 | 55 | "don't do anything illegal today, love you all equally, bye" | goofy wave | NEW: goofy wave / peace sign | — |
 
+## Epic-music jokes (these replace the visuals on the A/B beats above)
+Whenever the choir plays, he's somewhere epic and the lighting matches, played completely straight.
+When the music cuts, hard cut back to his normal room. These are full scenes with him
+painted in (not cutouts), so the light on him matches the place.
+
+| # | Line | Epic scene | Snap-back |
+|---|---|---|---|
+| 3 | "five months on dating apps" | candlelit medieval scriptorium, he solemnly reads a glowing phone like an ancient scroll | — |
+| 13 | "It's the reflection" | castle chamber, he gazes into an ornate medieval mirror; the reflection is a phone screen | — |
+| 18 | "It's like a drug." | gothic throne room, he sits slumped on a giant throne, phone glowing like a holy relic, candles, red banners | hard cut to bedroom, phone, music stops |
+| 20–21 | "obsessed with training… perfection… goals so big" | castle courtyard at sunset, he trains with a huge sword, epic, wind in his hair (still in the black tee) | — |
+| 22 | "Forgot. Completely." | (music cuts) | back in bedroom on his phone, deadpan |
+| 27 | "Then I got my wake-up call." | heaven: he stands on clouds, giant beams of golden light, the choir peaks | — |
+| 31 | "Wait. Do I act like this?" | gothic cathedral, stained glass, lightning flashes behind him, shocked face | — |
+| 38 | "If a knife is cutting you…" | a royal servant presents a dagger on a velvet pillow; he politely declines | — |
+| 46 | "You can be reborn." | heaven at sunrise, he rises in golden light, feathers drifting (warm choir) | — |
+
 ## New assets needed (about 25 images, ~700 credits)
 Expressions: shocked stare, deadpan, sarcastic smirk, hands on head, puppy-face pleading,
 ranting arms-out, chin-stroke "interesting", awkward grimace-laugh, sarcastic thumbs-up,

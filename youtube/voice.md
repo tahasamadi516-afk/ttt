@@ -52,3 +52,8 @@ documentary sections.
   2000s gothic/trance vocal feel, used where it fits the moment.
   Those songs themselves are copyrighted. Use original or licensed a cappella
   in that style, so videos don't get Content ID claims.
+- **The epic-music joke:** dramatic a cappella never plays over a normal room like the
+  kitchen. When the choir comes in, he's suddenly somewhere epic: a medieval castle,
+  a candlelit throne room, a cathedral, heaven with light beams. The lighting and
+  environment match the music, played completely straight. When the music cuts, hard
+  cut back to his normal room. The contrast is the joke.
