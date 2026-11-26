@@ -1,82 +1,80 @@
-# One line = one voice clip (generated separately, so each can be timed to its shot).
-# [BLEEP] = censored word: a bleep tone goes there instead.
-# " | " = a beat (short pause), " || " = a long pause. Phrases are voiced separately.
-# A line starting with @0.7 sets how expressive that line is (0.3 calm .. 0.9 wild; default 0.5).
-# A blank line = a longer pause (beat change).
-@0.5 Okay, so this morning | I'm making my breakfast, | minding my business, || and boom. || Flashbacks.
-@0.55 All the stupid stuff I was doing | the past, | I don't know, | five months | on dating apps.
-@0.7 And I'm just standing there like... || bro. || Who was that guy?
+# Video 01 narration, v2: rewritten for the voice (short, punchy, ends hard).
+# Same 62 beats as v1 (narration-v1.txt), so the edit plan still lines up.
+# One line = one voice clip. [BLEEP] = censored word. Blank line = longer pause.
+This morning I'm making breakfast. Minding my business. And boom. Flashbacks.
+Five months on dating apps. All the stupid stuff I did.
+And I'm just standing there. Bro. Who was that guy?
 
-@0.65 Because it's a game... | right? || Chase... | or get chased.
-@0.6 You're chasing somebody | who doesn't want you. || Somebody's chasing you, | and you don't even want them.
-@0.65 And everybody's trying to prove something. || Prove what? || Nobody knows!
-@0.75 "Hey, I'm worth looking at." || Just [BLEEP] off. | Don't look at me. | I don't even care if you exist.
-@0.6 That should've been my mentality. || Was it? || No. | Of course not. || Stupid idiot.
+It's a game. Chase or get chased. That's it.
+You chase someone who doesn't want you. Someone chases you, and you don't want them.
+And everybody's trying to prove something. Prove what? Nobody knows.
+"Hey, I'm worth looking at." Just [BLEEP] off. I don't even care if you exist.
+That should've been my mentality. Was it? No. Stupid idiot.
 
-@0.8 I didn't even want that person!
-@0.55 If I sat down and used my brain | for one minute, | just one, | I would've known.
-@0.85 But no. | They run away, | and suddenly it's, || "Oh, am I not working with you? | Did I do something? | Maybe I can prove I'm better. | Maybe I'm good enough!"
-@0.85 Good enough for what? || I didn't even like you!
+I didn't even want that person.
+One minute. That's all it would've taken. One minute of using my brain.
+But they pull away, and suddenly I'm the one trying. Did I do something? Can I prove I'm better? Am I good enough?
+Good enough for what? I didn't even like you.
 
-@0.4 It's not them you want. || It's the reflection. | The attention. || You wanna be wanted.
-@0.6 And they're acting high value, | so you go, | yeah, must be high value. || Might not be!
-@0.55 And the more desperate you get, | the further they go. || Like a cat. | You want the cat, | the cat leaves.
-@0.7 It's like Gojo's Infinity, | and daddy Mahoraga isn't on your side. || You get closer, | you never get there, | but you get the point.
+It's not them you want. It's the attention. You want to be wanted.
+They act high value, so you assume they are. They might not be.
+And the more desperate you get, the further they go. Like a cat. Chase the cat, the cat leaves.
+It's Gojo's Infinity, and daddy Mahoraga isn't on your side. You get closer and closer, and you never get there.
 
-@0.65 The funny part? || I saw it. | In the moment! | I fully understood what I was doing, | and I said, | "Interesting," || and kept doing it.
-@0.35 It's like a drug.
-@0.6 Meanwhile, | my actual life is sitting there like, || hello?
+The funny part? I saw it happening. In the moment. I looked at it, said "interesting," and kept going.
+It's like a drug.
+Meanwhile, my actual life is sitting there like, hello?
 
-@0.7 I was obsessed with training. || Obsessed. || I had this word in my head, | perfection. || The absolute best at what I do.
-@0.7 I had goals so big | I couldn't say them out loud, | it'd sound crazy.
-@0.4 And what happened to them? || Forgot. | Completely. || For a situation on my phone.
-@0.45 Now I'm training sad, | thinking about somebody, | while at the same time | I'm making somebody else sad.
-@0.6 How do you even manage that? || That's a little crazy.
+I was obsessed with training. Obsessed. One word in my head. Perfection.
+I had goals so big I couldn't say them out loud.
+What happened to them? Forgot them. Completely. For a situation on my phone.
+Now I'm training sad, thinking about one person, while making another person sad.
+How do you even manage that?
 
-@0.65 So how did I fix it? || Genius over here | got into a new situationship.
-@0.75 Beautiful. | Amazing. || Stupid, | uh, | decision. || Everybody can see it's stupid | except the guy doing it.
+So how did I fix it? Genius over here jumped into a new situationship.
+Beautiful. Amazing. Stupid. Everyone could see it except me.
 
-@0.4 Then I got my wake-up call.
-@0.55 I'd been chased before. | Everybody has. || But not like this.
-@0.65 We just met, | not even a week, | and I'm already her whole life.
-@0.6 I don't answer for five, | ten, | twenty minutes, | I open my phone: || twenty messages.
-@0.7 "Do you wanna go?" | "Do you still wanna talk to me?" | "Do I even matter to you?"
-@0.85 It's been a week! || I just entered your life, | and you're already making it run about me?
-@0.7 And I'm sitting there like, | what the hell... || wait. || Wait a minute. || Do I act like this?
-@0.55 Not that level. | Five percent. | Barely noticeable. || But no. || Even one percent of that, | I'm not accepting for myself.
+Then I got my wake-up call.
+I'd been chased before. Everybody has. But not like this.
+We'd known each other less than a week, and I was already her whole life.
+I don't answer for twenty minutes. I open my phone. Twenty messages.
+Do you wanna go? Do you still wanna talk to me? Do I even matter to you?
+It's been a week. I just walked into your life, and it already revolves around me?
+And then it hit me. Wait. Do I act like this?
+Not that bad. Maybe five percent. But even one percent, I'm not accepting that from myself.
 
-@0.6 Hold on, | my neighbor is looking at me from his window. || What the hell? || Anyway.
+Hold on. My neighbor is staring at me through his window. What the hell. Anyway.
 
-@0.45 And I'm not saying I'm better than her. || Everybody's better than this. | Even her. | Even if she doesn't think so right now.
-@0.75 We're all just fooled. | We watch movies, | social media, | and we go, | "I want that drama." || No you don't!
-@0.65 And these apps, | use your mind. || You think they want you to leave? || No! | They want your money. || You stay stuck, | they stay happy.
+I'm not saying I'm better than her. Everybody is better than this. Even her.
+We're all just fooled. Movies, social media. We think we want the drama. We don't.
+And these apps? Use your head. They don't want you to leave. They want your money. You stay stuck, they stay happy.
 
-@0.6 So leave. || And don't tell me you're "resisting."
-@0.55 If a knife is cutting you, | you're not resisting the knife. || Just stay away from the knife! | Let it heal.
-@0.75 But you keep going back like an idiot, || "Maybe this time | the knife is different."
+So leave. And don't tell me you're "resisting."
+If a knife is cutting you, you don't resist the knife. You stay away from it. You let it heal.
+But we keep going back. Maybe this time the knife is different.
 
-@0.6 Put the phone down. || Don't eat [BLEEP].
-@0.8 And if I catch you at McDonald's, | I hope God strikes you with a thunder. || Do you know how many ingredients are in that thing?
-@0.5 Go out. | Look around. | Go back to the old ways.
-@0.55 And yeah, yeah, | it's not that easy anymore, | it's complicated. || Doesn't matter. | Find a way.
+Put the phone down. Don't eat [BLEEP].
+And if I catch you at McDonald's, I hope God strikes you with thunder. Do you know how many ingredients are in that thing?
+Go outside. Look around. Go back to the old ways.
+Yeah, it's not that easy anymore. Doesn't matter. Find a way.
 
-@0.4 Remember being a kid? || Everything was bright, | you enjoyed everything. || That's your natural state.
-@0.45 You can go back. | Give it a month, | maybe two.
-@0.65 "No, my life is ruined." || Relax. || Remember that stupid high school relationship? | "I'm doomed, | it's gonna be like this forever."
-@0.6 And look, | you survived. || Maybe you're in high school right now. || I'm not. || Or am I?
+Remember being a kid? Everything was bright. You enjoyed everything. That's your natural state.
+You can go back. Give it a month. Maybe two.
+"My life is ruined." Relax. Remember that high school relationship? You thought it was forever.
+You survived. Maybe you're in high school right now. I'm not. Or am I?
 
-@0.5 You can be reborn. | For real! || Look at people, | they change their whole life. || You're not gonna be the same person forever.
-@0.45 If you want it, | you can be reborn. || You're human, | humans make mistakes, | and it wouldn't be fair | if you only got one shot.
-@0.35 I believe that's from God. || Whatever you think it's from, | up to you.
-@0.5 And I'm not saying don't chase love. || Chase a healthy one. || Loving wife, | loving husband, | hardworking, | respectful, | grinding for each other, | kids.
-@0.6 Not whatever that was on the app.
+You can be reborn. For real. People change their whole lives. You're not stuck being the same person forever.
+You're human. Humans make mistakes. It wouldn't be fair if you only got one shot.
+I believe that's from God. Whatever you believe, that's up to you.
+I'm not saying don't chase love. Chase a healthy one. A loving wife. A loving husband. Hardworking. Respectful. Grinding for each other. Kids.
+Not whatever that was on the app.
 
-@0.6 Honestly, | I didn't even want this video to be about dating apps. || [BLEEP] the dating apps.
-@0.8 We're sitting here like, | "This piece of [BLEEP] looks good." | "Oh no, | this piece of [BLEEP] is bad." || It's all [BLEEP]!
+Honestly, this video was never supposed to be about dating apps. [BLEEP] the dating apps.
+We sit there going, this piece of [BLEEP] looks good. No, this piece of [BLEEP] is bad. It's all [BLEEP].
 
-@0.4 I'm talking about being alive. || We say "get a life" | like it's "get a job." || Do you know what that is?
-@0.75 People go crazy over gold. || What the [BLEEP] is gold? || A metal!
-@0.4 But alive? || Memories, | feelings, | a character you get to build. || And that time's not coming back.
-@0.45 You could be doing anything with it. || And you're checking | if somebody texted back.
-@0.35 Don't waste it, man. || Enjoy it.
-@0.7 Anyways, | don't do anything illegal today. || Love you all equally. || Bye.
+I'm talking about being alive. We say "get a life" like it means "get a job."
+People go crazy over gold. What the [BLEEP] is gold? It's a metal.
+But being alive? Memories. Feelings. A character you get to build. And that time isn't coming back.
+You could be doing anything with it. And you're checking if somebody texted back.
+Don't waste it, man. Enjoy it.
+Don't do anything illegal today. Love you all equally. Bye.

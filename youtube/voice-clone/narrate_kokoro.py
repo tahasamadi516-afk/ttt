@@ -69,7 +69,7 @@ def main():
     pipe = KPipeline(lang_code="a")
     lines = parse(src)
     for i, ln in enumerate(lines, 1):
-        speed = round(0.9 + (ln["exaggeration"] - 0.5) * 0.25, 3)  # a little slower than default overall
+        speed = round(1.0 + (ln["exaggeration"] - 0.5) * 0.25, 3)  # normal pace unless a line is tagged
         parts, bleeps = [], []
         toks = [t for t in re.split(r"(\[BLEEP\]|\|\||\|)", ln["text"]) if t.strip()]
         for tok in toks:
