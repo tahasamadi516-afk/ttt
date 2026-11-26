@@ -14,8 +14,10 @@ Writes:
 """
 import hashlib
 import json
+import os
 import subprocess
 import sys
+import threading
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
@@ -190,11 +192,12 @@ def main():
         key = hashlib.sha1(json.dumps([scene, params, f1 - f0, W], sort_keys=True).encode()).hexdigest()[:16]
         out = build / "shots" / f"{key}.mp4"
         if not out.exists():
-            tmp = out.with_suffix(".tmp.mp4")
+            # Unique temp name per render: identical shots can render at the same time in parallel.
+            tmp = out.with_name(f"{key}.{threading.get_ident()}.tmp.mp4")
             sh(["node", str(ROOT / "tools/render.mjs"), str(ROOT / "tools/scenes" / scene), str(tmp),
                 "--duration", f"{dur:.6f}", "--fps", str(FPS), "--width", str(W), "--height", str(H),
                 "--params", json.dumps(params)])
-            tmp.rename(out)
+            os.replace(tmp, out)
         return out
 
     print(f"{len(shots)} shots, {end_time:.1f}s total; rendering with {jobs} jobs")
