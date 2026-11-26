@@ -58,7 +58,10 @@ Not stated yet. Default from the script: speak from his own experience and
 opinion, and never invent stats or studies.
 
 ## Voice (audio)
-Cloned from his own recording with Chatterbox: `youtube/voice-clone/` (setup.sh, narrate.py).
+**Channel voice: Kokoro `am_puck`** (an American male voice; the creator picked it over his own
+clone because he didn't like the accent). Run `youtube/voice-clone/narrate_kokoro.py`.
+Expressiveness tags (@0.7) map to speaking speed. The Chatterbox clone of his own voice
+(`narrate.py`, `ref-pro.wav`) is kept as a fallback.
 Swears are bleeped in the voiceover (his call, for ad safety).
 
 ## Format
