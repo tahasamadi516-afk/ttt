@@ -17,12 +17,26 @@
    "shots": [
     {
      "kind": "char",
+     "bg": "bedroom",
+     "pose": "pointing",
+     "x": 0.5,
+     "zoom": 0.06
+    }
+   ]
+  },
+  {
+   "lines": [
+    2
+   ],
+   "shots": [
+    {
+     "kind": "char",
      "bg": "kitchen",
      "pose": "cooking",
      "x": 0.33
     },
     {
-     "at": 0.78,
+     "at": 0.5,
      "kind": "char",
      "bg": "kitchen",
      "pose": "shocked",
@@ -33,29 +47,23 @@
   },
   {
    "lines": [
-    2
+    3
    ],
    "shots": [
     {
      "kind": "scene",
      "img": "epic-scriptorium-phone",
      "push": 0.12
-    }
-   ]
-  },
-  {
-   "lines": [
-    3
-   ],
-   "shots": [
+    },
     {
+     "at": 0.45,
      "kind": "char",
      "bg": "kitchen",
      "pose": "shrug",
      "x": 0.33
     },
     {
-     "at": 0.55,
+     "at": 0.7,
      "kind": "title",
      "lines": [
       "WHO WAS",
@@ -710,16 +718,8 @@
     {
      "kind": "char",
      "bg": null,
-     "pose": "talking",
+     "pose": "smile",
      "x": 0.5
-    },
-    {
-     "at": 0.7,
-     "kind": "char",
-     "bg": null,
-     "pose": "side-eye",
-     "x": 0.5,
-     "zoom": 0.1
     }
    ]
   },
@@ -904,8 +904,8 @@
   {
    "track": "dark",
    "lines": [
-    2,
-    2
+    3,
+    3
    ]
   },
   {
@@ -985,20 +985,26 @@
  },
  "sfx": [
   [
-   1,
+   2,
    0.0,
    "sizzle",
    0.35
   ],
   [
-   1,
-   0.78,
+   2,
+   0.5,
    "record-scratch",
    0.8
   ],
   [
    3,
-   0.55,
+   0.45,
+   "record-scratch",
+   0.6
+  ],
+  [
+   3,
+   0.7,
    "impact",
    0.9
   ],
