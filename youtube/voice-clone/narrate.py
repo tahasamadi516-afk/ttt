@@ -24,7 +24,9 @@ _load = torch.load
 torch.load = lambda *a, **k: _load(*a, **{**k, "map_location": torch.device("cpu")})  # CPU-only machine
 from chatterbox.tts import ChatterboxTTS  # noqa: E402
 
-REF = Path(__file__).with_name("ref.wav")
+# ref-pro.wav: a clean 15 s cut of full-clean.wav run through Resemble Enhance (studio, no room echo).
+# The clone copies the room sound of its reference, so a clean reference = a clean voice.
+REF = Path(__file__).with_name("ref-pro.wav")
 MAX_CHARS = 220  # long inputs make the model drift; split at sentence ends
 
 
@@ -86,9 +88,13 @@ def trim(w, sr, thresh=0.01):
 
 
 def main():
-    args = [a for a in sys.argv[1:] if not a.startswith("--")]
+    argv = sys.argv[1:]
+    args = [a for i, a in enumerate(argv) if not a.startswith("--") and not (i and argv[i - 1] in ("--ref", "--only"))]
     src, out_dir = args[0], Path(args[1])
     only = None
+    global REF
+    if "--ref" in sys.argv:
+        REF = Path(sys.argv[sys.argv.index("--ref") + 1])
     if "--only" in sys.argv:
         only = {int(x) for x in sys.argv[sys.argv.index("--only") + 1].split(",")}
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -102,7 +108,7 @@ def main():
             continue
         if only and i not in only:
             continue
-        parts = []
+        parts, bleeps = [], []
         pieces = ln["text"].split("[BLEEP]")
         for j, piece in enumerate(pieces):
             piece = piece.strip()
@@ -114,10 +120,18 @@ def main():
                 if parts:
                     parts.pop()  # no gap before the bleep
             if j < len(pieces) - 1:
-                parts += [silence(sr, 0.04), bleep(sr), silence(sr, 0.06)]
+                parts.append(silence(sr, 0.04))
+                pos = sum(p.shape[1] for p in parts) / sr
+                b = bleep(sr)
+                bleeps.append([round(pos, 4), round(b.shape[1] / sr, 4)])
+                parts += [b, silence(sr, 0.06)]
+        ln["bleeps"] = bleeps
+        (out_dir / f"line_{i:03d}.json").write_text(json.dumps(bleeps))
         ta.save(str(f), torch.cat(parts, dim=1), sr)
         print(f"[{i}/{len(lines)}] {f.name}: {ln['text'][:60]}", flush=True)
-    for ln in lines:
+    for i, ln in enumerate(lines, 1):
+        bj = out_dir / f"line_{i:03d}.json"
+        ln["bleeps"] = json.loads(bj.read_text()) if bj.exists() else []
         f = out_dir / ln["file"]
         if f.exists():
             info = ta.info(str(f))

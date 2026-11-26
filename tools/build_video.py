@@ -114,20 +114,22 @@ def main():
 
     # 4. Voice track: every line placed at its start, then the studio polish chain.
     vin, vf = [], []
+    clean = vdir / "voice" / "clean"
     for i, ln in enumerate(lines):
-        vin += ["-i", str(vdir / "voice" / ln["file"])]
+        src = clean / ln["file"] if (clean / ln["file"]).exists() else vdir / "voice" / ln["file"]
+        vin += ["-i", str(src)]
         ms = int(starts[i] * 1000)
         vf.append(f"[{i}:a]aresample=48000,adelay={ms}|{ms}[v{i}]")
     vf.append("".join(f"[v{i}]" for i in range(len(lines))) +
               f"amix=inputs={len(lines)}:normalize=0,apad=whole_dur={end_time:.3f},"
-              "highpass=f=80,equalizer=f=140:t=q:w=1:g=2.5,equalizer=f=300:t=q:w=1.2:g=-2,"
-              "equalizer=f=3500:t=q:w=1:g=2,acompressor=threshold=-22dB:ratio=3:attack=8:release=120:makeup=4,"
-              "deesser=i=0.3,loudnorm=I=-16:TP=-2[out]")
+              "highpass=f=75,equalizer=f=250:t=q:w=1.4:g=-3,equalizer=f=4000:t=q:w=1:g=2,"
+              "equalizer=f=10000:t=q:w=1:g=1.5,acompressor=threshold=-20dB:ratio=2.5:attack=10:release=150:makeup=3,"
+              "deesser=i=0.25,loudnorm=I=-16:TP=-1.5:LRA=9[out]")
     sh(["ffmpeg", "-loglevel", "error", "-y", *vin, "-filter_complex", ";".join(vf), "-map", "[out]",
         "-ac", "2", "-ar", "48000", str(build / "voice.wav")])
 
     # 5. Music beds and sound effects, mixed under the voice.
-    ins, fx, labels = ["-i", str(build / "voice.wav")], [], ["[0:a]"]
+    ins, fx, labels = ["-i", str(build / "voice.wav")], [], ["[vmain]"]
     n = 1
     for c in plan["music"]:
         a, b = line_start(c["lines"][0]), line_start(c["lines"][1] + 1)
@@ -136,17 +138,25 @@ def main():
         out_fade = 0.08 if c["track"] == "dark" else 0.8  # dark = hard cut back to reality
         ms = int(a * 1000)
         fx.append(f"[{n}:a]aresample=48000,atrim=0:{dur:.3f},asetpts=PTS-STARTPTS,afade=t=in:d=0.3,"
-                  f"afade=t=out:st={max(0, dur - out_fade):.3f}:d={out_fade},volume=0.55,adelay={ms}|{ms}[m{n}]")
+                  f"afade=t=out:st={max(0, dur - out_fade):.3f}:d={out_fade},volume=0.30,adelay={ms}|{ms}[m{n}]")
         labels.append(f"[m{n}]")
         n += 1
     for line, frac, name, vol in plan["sfx"]:
         a, b = line_start(line), line_start(line + 1)
         ms = int((a + (b - a) * frac) * 1000)
         ins += ["-i", str(ROOT / f"youtube/assets/sfx/{name}.wav")]
-        fx.append(f"[{n}:a]aresample=48000,volume={vol * 0.6},adelay={ms}|{ms}[s{n}]")
+        fx.append(f"[{n}:a]aresample=48000,volume={vol * 0.22},adelay={ms}|{ms}[s{n}]")
         labels.append(f"[s{n}]")
         n += 1
-    fx.append("".join(labels) + f"amix=inputs={len(labels)}:normalize=0,alimiter=limit=0.95[out]")
+    # Music and sfx bus, ducked whenever the voice is talking (sidechain).
+    fx.insert(0, "[0:a]asplit=2[vmain][vkey]")
+    bed = labels[1:]
+    if bed:
+        fx.append("".join(bed) + f"amix=inputs={len(bed)}:normalize=0[bed]")
+        fx.append("[bed][vkey]sidechaincompress=threshold=0.03:ratio=6:attack=20:release=300[duck]")
+        fx.append("[vmain][duck]amix=inputs=2:normalize=0,alimiter=limit=0.95[out]")
+    else:
+        fx.append("[vmain]anull[out]")
     sh(["ffmpeg", "-loglevel", "error", "-y", *ins, "-filter_complex", ";".join(fx), "-map", "[out]",
         "-t", f"{end_time:.3f}", "-ac", "2", "-ar", "48000", str(build / "mix.wav")])
 
