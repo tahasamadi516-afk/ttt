@@ -15,13 +15,13 @@ If you're chasing someone who doesn't want you, you're losing more than time. I 
 It's not them you want. It's the attention. This one's about quitting the chase and getting your actual life back.
 
 0:00 Who was that guy?
-0:18 Chase or get chased
-0:57 You just wanna be wanted
-1:35 The goals I forgot
-2:09 The wake-up call
-2:46 They want your money
-3:37 You can be reborn
-4:35 It's about being alive
+0:28 Chase or get chased
+1:32 You just wanna be wanted
+2:28 The goals I forgot
+3:22 The wake-up call
+4:22 They want your money
+5:33 You can be reborn
+7:03 It's about being alive
 
 Real talk from someone who's been there, making fun of himself the whole way. If you've been stuck on the apps, stuck in a situationship, or chasing somebody who keeps running, this is for you. Put the phone down. Don't waste it.
 
@@ -37,6 +37,6 @@ dating apps, quit dating apps, situationship, chasing someone who doesn't want y
 
 ## Notes
 - Made for YouTube with code-built animation and AI images. If YouTube asks about
-  altered or synthetic content: the voice is AI-generated (Qwen3-TTS, designed voice "E"), so tick
+  altered or synthetic content: the voice is AI-generated (Qwen3-TTS designed voice, converted with Chatterbox), so tick
   the AI disclosure box.
 - No music licensing needed: the a cappella beds are original, generated in OpenArt.

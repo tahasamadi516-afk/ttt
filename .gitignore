@@ -4,3 +4,4 @@ node_modules/
 youtube/videos/*/build/
 youtube/videos/*/build-preview/
 youtube/videos/*/*.mp4
+__pycache__/
