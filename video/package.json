@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "remotion studio",
-    "render": "remotion render Hello out/hello.mp4",
+    "render": "remotion render PaperCut out/papercut.mp4",
     "build": "remotion bundle"
   },
   "keywords": [],
@@ -14,6 +14,8 @@
   "license": "ISC",
   "dependencies": {
     "@remotion/cli": "^4.0.547",
+    "@remotion/google-fonts": "4.0.547",
+    "@remotion/transitions": "4.0.547",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "remotion": "^4.0.547"
